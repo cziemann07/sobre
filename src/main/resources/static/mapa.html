@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas Literário | Ziemann</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Merriweather', Georgia, serif;
+            background-color: #c9d4d6; /* Cor do oceano como fundo */
+            color: #2c1e14;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        #mapa-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            background-color: #c9d4d6; /* Oceano azul desbotado */
+        }
+
+        #mapa-svg {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+            display: block;
+        }
+
+        #mapa-svg:active { cursor: grabbing; }
+
+        /* PAÍSES */
+        .pais {
+            stroke: #8b7355;
+            stroke-width: 0.5px;
+            transition: fill 0.3s ease, stroke-width 0.2s ease;
+        }
+
+        .pais-nao-lido { fill: #d4c4a8; }
+        .pais-lido { fill: #7a8b5c; }
+
+        .pais:hover {
+            stroke: #4a3728;
+            stroke-width: 2px;
+            filter: brightness(1.1);
+            cursor: pointer;
+        }
+
+        /* HEADER */
+        .atlas-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 25px;
+            background: linear-gradient(to bottom, rgba(244, 228, 188, 0.95) 0%, rgba(244, 228, 188, 0) 100%);
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .atlas-titulo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            color: #4a3728;
+            letter-spacing: 2px;
+        }
+
+        .atlas-subtitulo {
+            font-size: 0.85rem;
+            color: #6b5344;
+            font-style: italic;
+            margin-top: 3px;
+        }
+
+        .btn-voltar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: linear-gradient(145deg, #fffdf5, #e8d9b5);
+            border: 2px solid #8b5a2b;
+            border-radius: 8px;
+            color: #4a3728;
+            font-family: 'Merriweather', serif;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .btn-voltar:hover {
+            background: #8b5a2b;
+            color: #fffdf5;
+        }
+
+        /* LEGENDA EXPANSÍVEL */
+        .legenda-container {
+            position: absolute;
+            bottom: 25px;
+            left: 25px;
+            z-index: 100;
+        }
+
+        .legenda {
+            background: linear-gradient(145deg, #fffdf5, #f4e4bc);
+            border: 2px solid #8b7355;
+            border-radius: 10px;
+            padding: 12px 18px;
+            box-shadow: 3px 3px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .legenda-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .legenda-titulo {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            color: #4a3728;
+            letter-spacing: 1px;
+        }
+
+        .legenda-chevron {
+            transition: transform 0.3s ease;
+            color: #8b5a2b;
+        }
+
+        .legenda-container:hover .legenda-chevron {
+            transform: rotate(180deg);
+        }
+
+        /* Painel expansível */
+        .legenda-expandida {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            margin-bottom: 8px;
+            background: linear-gradient(145deg, #fffdf5, #f4e4bc);
+            border: 2px solid #8b7355;
+            border-radius: 10px;
+            padding: 15px 18px;
+            box-shadow: 3px 3px 15px rgba(0,0,0,0.25);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            min-width: 220px;
+        }
+
+        .legenda-container:hover .legenda-expandida {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .legenda-secao {
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #d4c4a8;
+        }
+
+        .legenda-secao:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .legenda-secao-titulo {
+            font-size: 0.75rem;
+            color: #8b7355;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .legenda-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 6px 0;
+            font-size: 0.8rem;
+            color: #4a3728;
+        }
+
+        .legenda-cor {
+            width: 18px;
+            height: 18px;
+            border-radius: 3px;
+            border: 1px solid #8b7355;
+            flex-shrink: 0;
+        }
+
+        /* Botões de modo de visualização */
+        .modo-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            padding: 10px 12px;
+            margin: 5px 0;
+            background: #f4e4bc;
+            border: 1px solid #d4c4a8;
+            border-radius: 6px;
+            font-family: 'Merriweather', serif;
+            font-size: 0.8rem;
+            color: #4a3728;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modo-btn:hover {
+            background: #e8d9b5;
+        }
+
+        .modo-btn.ativo {
+            background: #8b5a2b;
+            color: #fffdf5;
+            border-color: #6b4423;
+        }
+
+        .modo-btn i { font-size: 1rem; }
+
+        /* Escala do mapa de calor */
+        .escala-calor {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .escala-barra {
+            flex: 1;
+            height: 12px;
+            border-radius: 6px;
+            background: linear-gradient(to right, #4a90a4, #7eb5c4, #f4e4bc, #e8a87c, #c75b39);
+        }
+
+        .escala-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: #6b5344;
+            margin-top: 3px;
+        }
+
+        /* CONTROLES ZOOM */
+        .zoom-controls {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 100;
+        }
+
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(145deg, #fffdf5, #e8d9b5);
+            border: 2px solid #8b5a2b;
+            border-radius: 8px;
+            color: #4a3728;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .zoom-btn:hover {
+            background: #8b5a2b;
+            color: #fffdf5;
+        }
+
+        /* STATS */
+        .stats-rapidas {
+            position: absolute;
+            top: 85px;
+            right: 25px;
+            background: linear-gradient(145deg, rgba(255,253,245,0.95), rgba(244,228,188,0.95));
+            border: 2px solid #8b7355;
+            border-radius: 10px;
+            padding: 12px 16px;
+            z-index: 100;
+            box-shadow: 3px 3px 12px rgba(0,0,0,0.15);
+        }
+
+        .stats-titulo {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            color: #4a3728;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .stats-numero {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #7a8b5c;
+        }
+
+        .stats-label {
+            font-size: 0.75rem;
+            color: #6b5344;
+        }
+
+        /* TOOLTIP */
+        .tooltip {
+            position: fixed;
+            pointer-events: none;
+            background: linear-gradient(145deg, #fffdf5, #f4e4bc);
+            border: 2px solid #8b5a2b;
+            border-radius: 10px;
+            padding: 15px 18px;
+            box-shadow: 4px 4px 15px rgba(0,0,0,0.25);
+            z-index: 500;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            max-width: 280px;
+        }
+
+        .tooltip.visible { opacity: 1; }
+
+        .tooltip-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d4c4a8;
+        }
+
+        .tooltip-bandeira {
+            width: 44px;
+            height: 30px;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            object-fit: cover;
+            background: #d4c4a8;
+        }
+
+        .tooltip-pais {
+            font-family: 'Cinzel', serif;
+            font-size: 1.05rem;
+            color: #4a3728;
+        }
+
+        .tooltip-info {
+            font-size: 0.85rem;
+            color: #6b5344;
+            line-height: 1.6;
+        }
+
+        .tooltip-info strong { color: #4a3728; }
+
+        .tooltip-status {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .tooltip-status.lido { background-color: #7a8b5c; color: #fff; }
+        .tooltip-status.nao-lido { background-color: #d4c4a8; color: #4a3728; }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(44, 30, 20, 0.75);
+            z-index: 600;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-overlay.visible { display: flex; }
+
+        .modal-card {
+            background: linear-gradient(145deg, #fffdf5, #f4e4bc);
+            border: 3px solid #8b5a2b;
+            border-radius: 12px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+            animation: modalEntrada 0.3s ease;
+        }
+
+        @keyframes modalEntrada {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #8b5a2b, #6b4423);
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .modal-bandeira {
+            width: 60px;
+            height: 42px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            object-fit: cover;
+            background: #4a3728;
+        }
+
+        .modal-pais-nome {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: #fffdf5;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 18px;
+            background: none;
+            border: none;
+            color: #fffdf5;
+            font-size: 1.8rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover { opacity: 1; transform: scale(1.1); }
+
+        .modal-body {
+            padding: 22px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .modal-capa { width: 110px; flex-shrink: 0; }
+
+        .modal-capa img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+            background: #d4c4a8;
+        }
+
+        .modal-info { flex: 1; }
+
+        .modal-autor-label {
+            font-size: 0.75rem;
+            color: #8b7355;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .modal-autor-nome {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: #4a3728;
+            margin-bottom: 15px;
+        }
+
+        .modal-stats {
+            background: rgba(212, 196, 168, 0.4);
+            border-radius: 8px;
+            padding: 12px 14px;
+        }
+
+        .modal-stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 0.9rem;
+            border-bottom: 1px dashed #c4b49a;
+        }
+
+        .modal-stat-item:last-child { border-bottom: none; }
+        .modal-stat-item span:first-child { color: #6b5344; }
+        .modal-stat-item span:last-child { font-weight: 700; color: #4a3728; }
+
+        /* LOADING */
+        .loading {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 50;
+        }
+
+        .loading-spinner {
+            width: 50px; height: 50px;
+            border: 4px solid #d4c4a8;
+            border-top: 4px solid #8b5a2b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-text {
+            font-family: 'Cinzel', serif;
+            color: #4a3728;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="mapa-container">
+        <header class="atlas-header">
+            <div>
+                <h1 class="atlas-titulo">ATLAS LITERÁRIO</h1>
+                <p class="atlas-subtitulo">Uma jornada pelos países através da literatura</p>
+            </div>
+            <a href="index.html" class="btn-voltar">
+                <i class="bx bx-arrow-back"></i>
+                Voltar à Estante
+            </a>
+        </header>
+
+        <svg id="mapa-svg"></svg>
+
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Carregando Atlas...</p>
+        </div>
+
+        <div class="stats-rapidas" id="stats-rapidas" style="display: none;">
+            <div class="stats-titulo">PAÍSES EXPLORADOS</div>
+            <span class="stats-numero" id="stats-numero">0</span>
+            <span class="stats-label"> de <span id="stats-total">0</span> países</span>
+        </div>
+
+        <!-- Legenda Expansível -->
+        <div class="legenda-container">
+            <div class="legenda-expandida">
+                <div class="legenda-secao">
+                    <div class="legenda-secao-titulo">Modo de Visualização</div>
+                    <button class="modo-btn ativo" id="modo-normal" onclick="setModo('normal')">
+                        <i class="bx bx-map"></i> Mapa Normal
+                    </button>
+                    <button class="modo-btn" id="modo-calor" onclick="setModo('calor')">
+                        <i class="bx bx-bar-chart-alt-2"></i> Mapa de Calor
+                    </button>
+                </div>
+                <div class="legenda-secao" id="legenda-normal">
+                    <div class="legenda-secao-titulo">Legenda</div>
+                    <div class="legenda-item">
+                        <div class="legenda-cor" style="background-color: #7a8b5c;"></div>
+                        <span>País explorado</span>
+                    </div>
+                    <div class="legenda-item">
+                        <div class="legenda-cor" style="background-color: #d4c4a8;"></div>
+                        <span>Por descobrir</span>
+                    </div>
+                </div>
+                <div class="legenda-secao" id="legenda-calor" style="display: none;">
+                    <div class="legenda-secao-titulo">Qtd. de Livros</div>
+                    <div class="escala-calor">
+                        <div class="escala-barra"></div>
+                    </div>
+                    <div class="escala-labels">
+                        <span>0</span>
+                        <span>Muitos</span>
+                    </div>
+                </div>
+            </div>
+            <div class="legenda">
+                <div class="legenda-header">
+                    <span class="legenda-titulo">LEGENDA</span>
+                    <i class="bx bx-chevron-up legenda-chevron"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="zoom-controls">
+            <button class="zoom-btn" id="zoom-in" title="Aproximar">+</button>
+            <button class="zoom-btn" id="zoom-out" title="Afastar">−</button>
+            <button class="zoom-btn" id="zoom-reset" title="Resetar"><i class="bx bx-reset"></i></button>
+        </div>
+    </div>
+
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip">
+        <div class="tooltip-header">
+            <img class="tooltip-bandeira" id="tooltip-bandeira" src="" alt="Bandeira">
+            <span class="tooltip-pais" id="tooltip-pais">País</span>
+        </div>
+        <div class="tooltip-info">
+            <p><strong>Autor destaque:</strong> <span id="tooltip-autor">-</span></p>
+            <p><strong>Livros lidos:</strong> <span id="tooltip-livros">0</span></p>
+            <span class="tooltip-status" id="tooltip-status">Status</span>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-header">
+                <img class="modal-bandeira" id="modal-bandeira" src="" alt="Bandeira">
+                <h2 class="modal-pais-nome" id="modal-pais-nome">País</h2>
+            </div>
+            <div class="modal-body">
+                <div class="modal-capa">
+                    <img id="modal-capa-img" src="" alt="Capa do livro">
+                </div>
+                <div class="modal-info">
+                    <p class="modal-autor-label">Autor em destaque</p>
+                    <h3 class="modal-autor-nome" id="modal-autor-nome">Nome do Autor</h3>
+                    <div class="modal-stats">
+                        <div class="modal-stat-item">
+                            <span>Livros lidos</span>
+                            <span id="modal-qtd-livros">0</span>
+                        </div>
+                        <div class="modal-stat-item">
+                            <span>Status</span>
+                            <span id="modal-status">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('mapa-container');
+        const svg = d3.select('#mapa-svg');
+        let width = container.clientWidth;
+        let height = container.clientHeight;
+
+        svg.attr('width', width).attr('height', height);
+
+        // Projeção Natural Earth - visual de atlas clássico
+        const projection = d3.geoNaturalEarth1()
+            .scale(width / 5.5)
+            .translate([width / 2, height / 2]);
+
+        const pathGenerator = d3.geoPath().projection(projection);
+        const g = svg.append('g');
+
+        let paisesData = {};
+        let paisesFeatures = [];
+        let modoAtual = 'normal';
+        let maxLivros = 1;
+
+        // ISO mappings
+        const isoNumToAlpha = {
+            '004': 'AFG', '008': 'ALB', '012': 'DZA', '020': 'AND', '024': 'AGO',
+            '028': 'ATG', '032': 'ARG', '036': 'AUS', '040': 'AUT', '044': 'BHS',
+            '048': 'BHR', '050': 'BGD', '051': 'ARM', '052': 'BRB', '056': 'BEL',
+            '064': 'BTN', '068': 'BOL', '070': 'BIH', '072': 'BWA', '076': 'BRA',
+            '084': 'BLZ', '090': 'SLB', '096': 'BRN', '100': 'BGR', '104': 'MMR',
+            '108': 'BDI', '112': 'BLR', '116': 'KHM', '120': 'CMR', '124': 'CAN',
+            '132': 'CPV', '140': 'CAF', '144': 'LKA', '148': 'TCD', '152': 'CHL',
+            '156': 'CHN', '158': 'TWN', '170': 'COL', '174': 'COM', '178': 'COG',
+            '180': 'COD', '188': 'CRI', '191': 'HRV', '192': 'CUB', '196': 'CYP',
+            '203': 'CZE', '204': 'BEN', '208': 'DNK', '212': 'DMA', '214': 'DOM',
+            '218': 'ECU', '222': 'SLV', '226': 'GNQ', '231': 'ETH', '232': 'ERI',
+            '233': 'EST', '242': 'FJI', '246': 'FIN', '250': 'FRA', '262': 'DJI',
+            '266': 'GAB', '268': 'GEO', '270': 'GMB', '275': 'PSE', '276': 'DEU',
+            '288': 'GHA', '300': 'GRC', '308': 'GRD', '320': 'GTM', '324': 'GIN',
+            '328': 'GUY', '332': 'HTI', '340': 'HND', '348': 'HUN', '352': 'ISL',
+            '356': 'IND', '360': 'IDN', '364': 'IRN', '368': 'IRQ', '372': 'IRL',
+            '376': 'ISR', '380': 'ITA', '384': 'CIV', '388': 'JAM', '392': 'JPN',
+            '398': 'KAZ', '400': 'JOR', '404': 'KEN', '408': 'PRK', '410': 'KOR',
+            '414': 'KWT', '417': 'KGZ', '418': 'LAO', '422': 'LBN', '426': 'LSO',
+            '428': 'LVA', '430': 'LBR', '434': 'LBY', '440': 'LTU', '442': 'LUX',
+            '450': 'MDG', '454': 'MWI', '458': 'MYS', '462': 'MDV', '466': 'MLI',
+            '470': 'MLT', '478': 'MRT', '480': 'MUS', '484': 'MEX', '496': 'MNG',
+            '498': 'MDA', '499': 'MNE', '504': 'MAR', '508': 'MOZ', '512': 'OMN',
+            '516': 'NAM', '524': 'NPL', '528': 'NLD', '540': 'NCL', '548': 'VUT',
+            '554': 'NZL', '558': 'NIC', '562': 'NER', '566': 'NGA', '578': 'NOR',
+            '586': 'PAK', '591': 'PAN', '598': 'PNG', '600': 'PRY', '604': 'PER',
+            '608': 'PHL', '616': 'POL', '620': 'PRT', '624': 'GNB', '626': 'TLS',
+            '630': 'PRI', '634': 'QAT', '642': 'ROU', '643': 'RUS', '646': 'RWA',
+            '682': 'SAU', '686': 'SEN', '688': 'SRB', '694': 'SLE', '702': 'SGP',
+            '703': 'SVK', '704': 'VNM', '705': 'SVN', '706': 'SOM', '710': 'ZAF',
+            '716': 'ZWE', '724': 'ESP', '728': 'SSD', '729': 'SDN', '732': 'ESH',
+            '740': 'SUR', '748': 'SWZ', '752': 'SWE', '756': 'CHE', '760': 'SYR',
+            '762': 'TJK', '764': 'THA', '768': 'TGO', '780': 'TTO', '784': 'ARE',
+            '788': 'TUN', '792': 'TUR', '795': 'TKM', '800': 'UGA', '804': 'UKR',
+            '807': 'MKD', '818': 'EGY', '826': 'GBR', '834': 'TZA', '840': 'USA',
+            '854': 'BFA', '858': 'URY', '860': 'UZB', '862': 'VEN', '887': 'YEM',
+            '894': 'ZMB', '-99': 'XXX'
+        };
+
+        const alpha3ToAlpha2 = {
+            'AFG': 'af', 'ALB': 'al', 'DZA': 'dz', 'AGO': 'ao', 'ARG': 'ar',
+            'AUS': 'au', 'AUT': 'at', 'BGD': 'bd', 'BEL': 'be', 'BOL': 'bo',
+            'BRA': 'br', 'BGR': 'bg', 'MMR': 'mm', 'KHM': 'kh', 'CMR': 'cm',
+            'CAN': 'ca', 'CHL': 'cl', 'CHN': 'cn', 'COL': 'co', 'COG': 'cg',
+            'COD': 'cd', 'CRI': 'cr', 'HRV': 'hr', 'CUB': 'cu', 'CZE': 'cz',
+            'DNK': 'dk', 'DOM': 'do', 'ECU': 'ec', 'EGY': 'eg', 'SLV': 'sv',
+            'ETH': 'et', 'FIN': 'fi', 'FRA': 'fr', 'DEU': 'de', 'GHA': 'gh',
+            'GRC': 'gr', 'GTM': 'gt', 'HTI': 'ht', 'HND': 'hn', 'HUN': 'hu',
+            'IND': 'in', 'IDN': 'id', 'IRN': 'ir', 'IRQ': 'iq', 'IRL': 'ie',
+            'ISR': 'il', 'ITA': 'it', 'CIV': 'ci', 'JPN': 'jp', 'KAZ': 'kz',
+            'KEN': 'ke', 'PRK': 'kp', 'KOR': 'kr', 'KWT': 'kw', 'LBN': 'lb',
+            'LBR': 'lr', 'LBY': 'ly', 'MYS': 'my', 'MLI': 'ml', 'MEX': 'mx',
+            'MNG': 'mn', 'MAR': 'ma', 'MOZ': 'mz', 'NPL': 'np', 'NLD': 'nl',
+            'NZL': 'nz', 'NIC': 'ni', 'NGA': 'ng', 'NOR': 'no', 'PAK': 'pk',
+            'PAN': 'pa', 'PNG': 'pg', 'PRY': 'py', 'PER': 'pe', 'PHL': 'ph',
+            'POL': 'pl', 'PRT': 'pt', 'QAT': 'qa', 'ROU': 'ro', 'RUS': 'ru',
+            'SAU': 'sa', 'SEN': 'sn', 'SRB': 'rs', 'SGP': 'sg', 'SVK': 'sk',
+            'VNM': 'vn', 'SVN': 'si', 'SOM': 'so', 'ZAF': 'za', 'ESP': 'es',
+            'SDN': 'sd', 'SWE': 'se', 'CHE': 'ch', 'SYR': 'sy', 'THA': 'th',
+            'TUN': 'tn', 'TUR': 'tr', 'UKR': 'ua', 'ARE': 'ae', 'GBR': 'gb',
+            'USA': 'us', 'URY': 'uy', 'UZB': 'uz', 'VEN': 've', 'YEM': 'ye',
+            'ZMB': 'zm', 'ZWE': 'zw', 'TWN': 'tw', 'ISL': 'is', 'LUX': 'lu',
+            'EST': 'ee', 'LVA': 'lv', 'LTU': 'lt', 'BLR': 'by', 'MDA': 'md',
+            'GEO': 'ge', 'ARM': 'am', 'AZE': 'az', 'TKM': 'tm', 'TJK': 'tj',
+            'KGZ': 'kg', 'SSD': 'ss', 'ERI': 'er'
+        };
+
+        const paisNomes = {
+            'BRA': 'Brasil', 'USA': 'Estados Unidos', 'GBR': 'Reino Unido',
+            'FRA': 'França', 'DEU': 'Alemanha', 'ITA': 'Itália', 'ESP': 'Espanha',
+            'PRT': 'Portugal', 'JPN': 'Japão', 'CHN': 'China', 'RUS': 'Rússia',
+            'ARG': 'Argentina', 'MEX': 'México', 'COL': 'Colômbia', 'CHL': 'Chile',
+            'IND': 'Índia', 'AUS': 'Austrália', 'CAN': 'Canadá', 'ZAF': 'África do Sul',
+            'EGY': 'Egito', 'NGA': 'Nigéria', 'KEN': 'Quênia', 'MAR': 'Marrocos',
+            'KOR': 'Coreia do Sul', 'PRK': 'Coreia do Norte', 'TUR': 'Turquia',
+            'GRC': 'Grécia', 'POL': 'Polônia', 'UKR': 'Ucrânia', 'SWE': 'Suécia',
+            'NOR': 'Noruega', 'FIN': 'Finlândia', 'DNK': 'Dinamarca', 'NLD': 'Países Baixos',
+            'BEL': 'Bélgica', 'CHE': 'Suíça', 'AUT': 'Áustria', 'CZE': 'República Tcheca',
+            'PER': 'Peru', 'VEN': 'Venezuela', 'CUB': 'Cuba', 'IRL': 'Irlanda',
+            'NZL': 'Nova Zelândia', 'ISL': 'Islândia'
+        };
+
+        function numericToAlpha3(code) {
+            if (!code) return 'XXX';
+            return isoNumToAlpha[String(code).padStart(3, '0')] || 'XXX';
+        }
+
+        function getAlpha2(a3) { return alpha3ToAlpha2[a3] || a3.toLowerCase().slice(0, 2); }
+        function getNomePais(a3, props) { return paisesData[a3]?.nomePais || paisNomes[a3] || props?.name || a3; }
+
+        // Escala de cores para mapa de calor (azul -> vermelho)
+        function getCorCalor(qtd) {
+            if (qtd === 0) return '#d4c4a8'; // Bege neutro para 0
+            const ratio = Math.min(qtd / maxLivros, 1);
+            // Interpolar de azul frio para vermelho quente
+            if (ratio < 0.5) {
+                // Azul para amarelo
+                const r = Math.round(74 + (244 - 74) * (ratio * 2));
+                const g = Math.round(144 + (228 - 144) * (ratio * 2));
+                const b = Math.round(164 + (188 - 164) * (ratio * 2));
+                return `rgb(${r},${g},${b})`;
+            } else {
+                // Amarelo para vermelho
+                const r = Math.round(244 + (199 - 244) * ((ratio - 0.5) * 2));
+                const g = Math.round(228 + (91 - 228) * ((ratio - 0.5) * 2));
+                const b = Math.round(188 + (57 - 188) * ((ratio - 0.5) * 2));
+                return `rgb(${r},${g},${b})`;
+            }
+        }
+
+        // Atualizar cores dos países
+        function atualizarCores() {
+            g.selectAll('.pais')
+                .transition()
+                .duration(500)
+                .attr('fill', function(d) {
+                    const a3 = numericToAlpha3(d.id);
+                    const info = paisesData[a3];
+                    if (modoAtual === 'calor') {
+                        return getCorCalor(info?.qtdLivros || 0);
+                    } else {
+                        return info?.lido ? '#7a8b5c' : '#d4c4a8';
+                    }
+                });
+        }
+
+        // Trocar modo de visualização
+        window.setModo = function(modo) {
+            modoAtual = modo;
+            document.getElementById('modo-normal').classList.toggle('ativo', modo === 'normal');
+            document.getElementById('modo-calor').classList.toggle('ativo', modo === 'calor');
+            document.getElementById('legenda-normal').style.display = modo === 'normal' ? 'block' : 'none';
+            document.getElementById('legenda-calor').style.display = modo === 'calor' ? 'block' : 'none';
+            atualizarCores();
+        };
+
+        // Zoom
+        const zoom = d3.zoom()
+            .scaleExtent([1, 8])
+            .translateExtent([[0, 0], [width, height]]) // Limita o pan
+            .on('zoom', (e) => g.attr('transform', e.transform));
+
+        svg.call(zoom);
+
+        document.getElementById('zoom-in').onclick = () => svg.transition().duration(300).call(zoom.scaleBy, 1.5);
+        document.getElementById('zoom-out').onclick = () => svg.transition().duration(300).call(zoom.scaleBy, 0.67);
+        document.getElementById('zoom-reset').onclick = () => svg.transition().duration(400).call(zoom.transform, d3.zoomIdentity);
+
+        // Tooltip
+        const tooltip = document.getElementById('tooltip');
+
+        function mostrarTooltip(e, a3, props) {
+            const info = paisesData[a3] || {};
+            document.getElementById('tooltip-bandeira').src = `https://flagcdn.com/w80/${getAlpha2(a3)}.png`;
+            document.getElementById('tooltip-pais').textContent = getNomePais(a3, props);
+            document.getElementById('tooltip-autor').textContent = info.topAutor || 'Nenhum ainda';
+            document.getElementById('tooltip-livros').textContent = info.qtdLivros || 0;
+            const st = document.getElementById('tooltip-status');
+            st.textContent = info.lido ? '✓ Explorado' : 'Por descobrir';
+            st.className = 'tooltip-status ' + (info.lido ? 'lido' : 'nao-lido');
+            posTooltip(e);
+            tooltip.classList.add('visible');
+        }
+
+        function posTooltip(e) {
+            let x = e.clientX + 15, y = e.clientY + 15;
+            if (x + 280 > window.innerWidth) x = e.clientX - 295;
+            if (y + 180 > window.innerHeight) y = e.clientY - 195;
+            tooltip.style.left = x + 'px';
+            tooltip.style.top = y + 'px';
+        }
+
+        function esconderTooltip() { tooltip.classList.remove('visible'); }
+
+        // Modal
+        const modal = document.getElementById('modal-overlay');
+
+        function abrirModal(a3, props) {
+            const info = paisesData[a3] || {};
+            document.getElementById('modal-bandeira').src = `https://flagcdn.com/w160/${getAlpha2(a3)}.png`;
+            document.getElementById('modal-pais-nome').textContent = getNomePais(a3, props);
+            document.getElementById('modal-autor-nome').textContent = info.topAutor || 'Nenhum autor';
+            document.getElementById('modal-qtd-livros').textContent = info.qtdLivros || 0;
+            document.getElementById('modal-status').textContent = info.lido ? '✓ Explorado' : 'Por descobrir';
+            document.getElementById('modal-capa-img').src = `https://placehold.co/110x160/d4c4a8/4a3728?text=${encodeURIComponent(info.topAutor?.split(' ')[0] || '?')}`;
+            modal.classList.add('visible');
+        }
+
+        document.getElementById('modal-close').onclick = () => modal.classList.remove('visible');
+        modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('visible'); };
+        document.onkeydown = (e) => { if (e.key === 'Escape') modal.classList.remove('visible'); };
+
+        // Inicialização
+        async function init() {
+            try {
+                const resAPI = await fetch('/api/mapa');
+                if (!resAPI.ok) throw new Error('API indisponível');
+                const dados = await resAPI.json();
+
+                dados.forEach(p => { paisesData[p.isoCode] = p; });
+                maxLivros = Math.max(...dados.map(p => p.qtdLivros || 0), 1);
+
+                const lidos = dados.filter(p => p.lido).length;
+                document.getElementById('stats-numero').textContent = lidos;
+                document.getElementById('stats-total').textContent = dados.length;
+                document.getElementById('stats-rapidas').style.display = 'block';
+
+                const resGeo = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+                const topo = await resGeo.json();
+                const paises = topojson.feature(topo, topo.objects.countries);
+                paisesFeatures = paises.features;
+
+                g.selectAll('.pais')
+                    .data(paisesFeatures)
+                    .enter()
+                    .append('path')
+                    .attr('class', 'pais')
+                    .attr('d', pathGenerator)
+                    .attr('fill', d => {
+                        const a3 = numericToAlpha3(d.id);
+                        return paisesData[a3]?.lido ? '#7a8b5c' : '#d4c4a8';
+                    })
+                    .on('mouseenter', function(e, d) {
+                        mostrarTooltip(e, numericToAlpha3(d.id), d.properties);
+                    })
+                    .on('mousemove', posTooltip)
+                    .on('mouseleave', esconderTooltip)
+                    .on('click', function(e, d) {
+                        abrirModal(numericToAlpha3(d.id), d.properties);
+                    });
+
+                document.getElementById('loading').style.display = 'none';
+
+            } catch (err) {
+                document.getElementById('loading').innerHTML = `
+                    <p class="loading-text" style="color: #8b5a2b;">
+                        Erro ao carregar<br>
+                        <small style="font-size: 0.85rem;">${err.message}</small>
+                    </p>`;
+            }
+        }
+
+        init();
+
+        window.onresize = () => {
+            width = container.clientWidth;
+            height = container.clientHeight;
+            svg.attr('width', width).attr('height', height);
+            projection.scale(width / 5.5).translate([width / 2, height / 2]);
+        };
+    </script>
+</body>
+</html>

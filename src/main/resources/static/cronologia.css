@@ -1,0 +1,171 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: #0a0a0a;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section-heading {
+    text-align: center;
+    padding: 100px 0;
+}
+
+.section-heading h2 {
+    font-size: 3rem;
+    background: linear-gradient(to right, #ff6a00, #ee0979);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* --- ESTRUTURA DA TIMELINE --- */
+.timeline_component {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* LINHA CINZA DE FUNDO (PERCORRE TUDO) */
+.timeline_background-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%; /* Centralizada */
+    width: 4px;
+    background-color: #333;
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
+/* BARRA COLORIDA FIXA (O TRUQUE VISUAL) */
+/* Ela fica parada ocupando do topo até o meio da tela (50vh) */
+.timeline_progress-bar {
+    position: fixed;
+    left: 50%;
+    top: 0;
+    bottom: 50vh; /* Termina exatamente no meio */
+    width: 4px;
+    background: linear-gradient(to bottom, #ff6a00, #ee0979);
+    transform: translateX(-50%);
+    z-index: 1; /* Fica acima da linha cinza */
+    box-shadow: 0 0 15px rgba(255, 106, 0, 0.6);
+}
+
+/* O ITEM DA TIMELINE */
+.timeline_item {
+    display: grid;
+    /* Coluna Data | Espaço/Linha | Coluna Texto */
+    grid-template-columns: 1fr 100px 1fr;
+    /* IMPORTANTE: Stretch faz as colunas terem a altura do conteúdo mais alto (o texto) */
+    align-items: stretch; 
+    width: 100%;
+    padding-bottom: 150px; /* Espaço generoso entre itens */
+    position: relative;
+    z-index: 2; /* Fica acima das linhas */
+}
+
+/* COLUNA DA ESQUERDA (DATA) */
+.timeline_left {
+    text-align: right;
+    padding-right: 20px;
+}
+
+/* O TEXTO DA DATA QUE VAI GRUDAR */
+.timeline_date-text {
+    position: sticky;
+    top: 50vh; /* Gruda no meio da tela */
+    transform: translateY(-50%); /* Ajuste fino de centro */
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+    /* Transição suave se quiser mudar cor depois */
+    transition: color 0.3s ease;
+}
+
+/* COLUNA DO CENTRO (BOLINHA) */
+.timeline_centre {
+    display: flex;
+    justify-content: center;
+}
+
+/* A BOLINHA QUE VAI GRUDAR */
+.timeline_circle {
+    position: sticky;
+    top: 50vh; /* Gruda no meio da tela */
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background-color: #0a0a0a; /* Fundo igual ao body */
+    border: 3px solid #555; /* Borda cinza inicial */
+    border-radius: 50%;
+    z-index: 3;
+    box-shadow: 0 0 10px rgba(0,0,0,1);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* COLUNA DA DIREITA (TEXTO) */
+.timeline_right {
+    padding-left: 20px;
+}
+
+.timeline_text {
+    background-color: #1a1a1a;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    color: #ccc;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.timeline_text h3 {
+    margin-top: 0;
+    color: #ff6a00;
+    font-size: 1.5rem;
+}
+
+/* RESPONSIVIDADE (CELULAR) */
+@media screen and (max-width: 768px) {
+    .timeline_item {
+        grid-template-columns: 50px 1fr; /* Remove a coluna da data */
+        padding-bottom: 80px;
+    }
+
+    .timeline_left {
+        display: none; /* Some a data lateral */
+    }
+
+    .timeline_centre {
+        grid-column: 1 / 2;
+    }
+
+    .timeline_right {
+        grid-column: 2 / 3;
+    }
+    
+    .timeline_text h3::before {
+        /* Joga a data para dentro do título no celular */
+        content: attr(data-date); 
+        display: block;
+        font-size: 0.9em;
+        color: #666;
+    }
+    
+    /* Ajusta a linha para a esquerda */
+    .timeline_background-line, 
+    .timeline_progress-bar {
+        left: 25px; /* Metade da coluna de 50px */
+        transform: translateX(-50%);
+    }
+}
