@@ -4,168 +4,559 @@
 
 body {
     margin: 0;
-    background-color: #0a0a0a;
-    color: #fff;
-    font-family: Arial, sans-serif;
+    background-color: #080810;
+    color: #e0e0e0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
 }
 
 .container {
-    max-width: 1100px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 30px;
 }
 
+/* ========== HEADER ========== */
 .section-heading {
     text-align: center;
-    padding: 100px 0;
+    padding: 80px 0 60px;
 }
 
 .section-heading h2 {
-    font-size: 3rem;
-    background: linear-gradient(to right, #ff6a00, #ee0979);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 3.2rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #a8e6cf 0%, #7fcdcd 50%, #a8b5e6 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 15px 0;
+    letter-spacing: -0.5px;
 }
 
-/* --- ESTRUTURA DA TIMELINE --- */
+.section-heading .subtitle {
+    color: #606080;
+    font-size: 1rem;
+    font-weight: 300;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+/* ========== TIMELINE ========== */
 .timeline_component {
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    padding-left: 120px;
 }
 
-/* LINHA CINZA DE FUNDO (PERCORRE TUDO) */
-.timeline_background-line {
+/* Linha vertical da timeline */
+.timeline_component::before {
+    content: '';
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%; /* Centralizada */
-    width: 4px;
-    background-color: #333;
-    transform: translateX(-50%);
-    z-index: 0;
+    left: 100px;
+    top: 80px;
+    bottom: 150px;
+    width: 2px;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        #2a2a40 3%,
+        #2a2a40 97%,
+        transparent 100%
+    );
 }
 
-/* BARRA COLORIDA FIXA (O TRUQUE VISUAL) */
-/* Ela fica parada ocupando do topo até o meio da tela (50vh) */
-.timeline_progress-bar {
-    position: fixed;
-    left: 50%;
-    top: 0;
-    bottom: 50vh; /* Termina exatamente no meio */
-    width: 4px;
-    background: linear-gradient(to bottom, #ff6a00, #ee0979);
-    transform: translateX(-50%);
-    z-index: 1; /* Fica acima da linha cinza */
-    box-shadow: 0 0 15px rgba(255, 106, 0, 0.6);
-}
-
-/* O ITEM DA TIMELINE */
-.timeline_item {
-    display: grid;
-    /* Coluna Data | Espaço/Linha | Coluna Texto */
-    grid-template-columns: 1fr 100px 1fr;
-    /* IMPORTANTE: Stretch faz as colunas terem a altura do conteúdo mais alto (o texto) */
-    align-items: stretch; 
-    width: 100%;
-    padding-bottom: 150px; /* Espaço generoso entre itens */
+/* ========== MARCADOR DE ERA ========== */
+.era-marker {
     position: relative;
-    z-index: 2; /* Fica acima das linhas */
+    padding: 50px 0 40px 40px;
 }
 
-/* COLUNA DA ESQUERDA (DATA) */
-.timeline_left {
-    text-align: right;
-    padding-right: 20px;
+.era-marker span {
+    display: block;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
 }
 
-/* O TEXTO DA DATA QUE VAI GRUDAR */
-.timeline_date-text {
-    position: sticky;
-    top: 50vh; /* Gruda no meio da tela */
-    transform: translateY(-50%); /* Ajuste fino de centro */
-    font-size: 3rem;
-    font-weight: 700;
-    margin: 0;
-    color: #fff;
-    /* Transição suave se quiser mudar cor depois */
+.era-marker small {
+    display: block;
+    color: #505070;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    font-weight: 300;
+}
+
+.era-marker[data-era="colonial"] span {
+    color: #c9b896;
+}
+
+.era-marker[data-era="nacional"] span {
+    color: #96c9b8;
+}
+
+/* Bolinha na linha para era */
+.era-marker::before {
+    content: '';
+    position: absolute;
+    left: -27px;
+    top: 55px;
+    width: 14px;
+    height: 14px;
+    background: #080810;
+    border: 2px solid #505070;
+    border-radius: 50%;
+}
+
+/* ========== ITEM DA TIMELINE ========== */
+.timeline_item {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    padding-bottom: 50px;
+    position: relative;
+}
+
+/* Bolinha na linha */
+.timeline_item::before {
+    content: '';
+    position: absolute;
+    left: -25px;
+    top: 25px;
+    width: 10px;
+    height: 10px;
+    background: #080810;
+    border: 2px solid #3a3a50;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.timeline_item:hover::before {
+    border-color: #7fcdcd;
+    box-shadow: 0 0 12px rgba(127, 205, 205, 0.4);
+}
+
+/* ========== DATA ========== */
+.timeline_date {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #7a7a9a;
+    min-width: 60px;
+    padding-top: 18px;
     transition: color 0.3s ease;
 }
 
-/* COLUNA DO CENTRO (BOLINHA) */
-.timeline_centre {
+.timeline_item:hover .timeline_date {
+    color: #a8e6cf;
+}
+
+/* ========== CARD ========== */
+.timeline_card {
+    flex: 1;
+    background: linear-gradient(145deg, #12121a 0%, #0e0e16 100%);
+    padding: 25px 30px;
+    border-radius: 12px;
+    border: 1px solid #1a1a2a;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timeline_card:hover {
+    transform: translateY(-4px);
+    border-color: #3a4a5a;
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(127, 205, 205, 0.1);
+}
+
+.timeline_card:active {
+    transform: translateY(-2px);
+}
+
+/* ========== BADGES ========== */
+.era-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.era-badge.colonial {
+    background: rgba(201, 184, 150, 0.15);
+    color: #c9b896;
+    border: 1px solid rgba(201, 184, 150, 0.2);
+}
+
+.era-badge.nacional {
+    background: rgba(150, 201, 184, 0.15);
+    color: #96c9b8;
+    border: 1px solid rgba(150, 201, 184, 0.2);
+}
+
+/* ========== CONTEÚDO DO CARD ========== */
+.timeline_card h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    margin: 0 0 12px 0;
+    color: #e8e8f0;
+    font-size: 1.35rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.timeline_card:hover h3 {
+    color: #a8e6cf;
+}
+
+.timeline_card p {
+    margin: 0;
+    color: #8888a0;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    font-weight: 300;
+}
+
+.click-hint {
+    display: block;
+    margin-top: 15px;
+    font-size: 0.7rem;
+    color: #4a4a60;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.timeline_card:hover .click-hint {
+    color: #7fcdcd;
+}
+
+/* ========== FIM DA TIMELINE ========== */
+.timeline_end {
+    height: 100px;
+}
+
+/* ========== MODAL ========== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(8, 8, 16, 0.95);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
     display: flex;
     justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
 }
 
-/* A BOLINHA QUE VAI GRUDAR */
-.timeline_circle {
-    position: sticky;
-    top: 50vh; /* Gruda no meio da tela */
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    background-color: #0a0a0a; /* Fundo igual ao body */
-    border: 3px solid #555; /* Borda cinza inicial */
-    border-radius: 50%;
-    z-index: 3;
-    box-shadow: 0 0 10px rgba(0,0,0,1);
-    transition: border-color 0.3s ease, background-color 0.3s ease;
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
 }
 
-/* COLUNA DA DIREITA (TEXTO) */
-.timeline_right {
-    padding-left: 20px;
+.modal-content {
+    background: linear-gradient(145deg, #12121a 0%, #0a0a12 100%);
+    border-radius: 16px;
+    max-width: 750px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    border: 1px solid #1a1a2a;
+    transform: scale(0.9) translateY(30px);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.timeline_text {
-    background-color: #1a1a1a;
-    padding: 30px;
-    border-radius: 12px;
-    border: 1px solid #333;
-    color: #ccc;
-    font-size: 1.1rem;
-    line-height: 1.6;
+.modal-overlay.active .modal-content {
+    transform: scale(1) translateY(0);
 }
 
-.timeline_text h3 {
-    margin-top: 0;
-    color: #ff6a00;
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #2a2a3a;
+    color: #808090;
     font-size: 1.5rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
 }
 
-/* RESPONSIVIDADE (CELULAR) */
+.modal-close:hover {
+    background: rgba(127, 205, 205, 0.1);
+    border-color: #7fcdcd;
+    color: #7fcdcd;
+}
+
+.modal-body {
+    padding: 45px;
+}
+
+.modal-body h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: #e8e8f0;
+}
+
+.modal-body .modal-period {
+    color: #606080;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    font-weight: 300;
+}
+
+.modal-body .modal-era {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+}
+
+.modal-body .modal-era.colonial {
+    background: rgba(201, 184, 150, 0.15);
+    color: #c9b896;
+    border: 1px solid rgba(201, 184, 150, 0.2);
+}
+
+.modal-body .modal-era.nacional {
+    background: rgba(150, 201, 184, 0.15);
+    color: #96c9b8;
+    border: 1px solid rgba(150, 201, 184, 0.2);
+}
+
+.modal-body .modal-description {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #a0a0b0;
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+.modal-body .modal-section {
+    margin-bottom: 28px;
+}
+
+.modal-body .modal-section h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #a8e6cf;
+    font-size: 1.15rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #1a1a2a;
+}
+
+.modal-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-body ul li {
+    padding: 10px 0;
+    padding-left: 18px;
+    position: relative;
+    color: #8888a0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #12121a;
+}
+
+.modal-body ul li:last-child {
+    border-bottom: none;
+}
+
+.modal-body ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background: #7fcdcd;
+    border-radius: 50%;
+}
+
+.modal-body .author-highlight {
+    color: #d0d0e0;
+    font-weight: 500;
+}
+
+.modal-body .work-title {
+    color: #a8b5e6;
+    font-style: italic;
+}
+
+/* ========== FASES (Romantismo/Modernismo) ========== */
+.modal-fases {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-fases .fase-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid #1a1a2a;
+    border-radius: 10px;
+    padding: 22px;
+    transition: all 0.25s ease;
+}
+
+.modal-fases .fase-card:hover {
+    border-color: #2a3a4a;
+    background: rgba(127, 205, 205, 0.02);
+}
+
+.modal-fases .fase-card h4 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #a8e6cf;
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin: 0 0 10px 0;
+}
+
+.modal-fases .fase-card p {
+    color: #8888a0;
+    line-height: 1.7;
+    margin: 0 0 12px 0;
+    font-size: 0.88rem;
+    font-weight: 300;
+}
+
+.modal-fases .fase-card .autores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.modal-fases .fase-card .autor-tag {
+    background: rgba(168, 181, 230, 0.1);
+    color: #a8b5e6;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* ========== SCROLLBAR ========== */
+.modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #0a0a12;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #2a2a3a;
+    border-radius: 3px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #3a3a4a;
+}
+
+/* ========== RESPONSIVO ========== */
 @media screen and (max-width: 768px) {
-    .timeline_item {
-        grid-template-columns: 50px 1fr; /* Remove a coluna da data */
-        padding-bottom: 80px;
+    .container {
+        padding: 0 20px;
     }
 
-    .timeline_left {
-        display: none; /* Some a data lateral */
+    .section-heading {
+        padding: 60px 0 40px;
     }
 
-    .timeline_centre {
-        grid-column: 1 / 2;
+    .section-heading h2 {
+        font-size: 2.2rem;
     }
 
-    .timeline_right {
-        grid-column: 2 / 3;
+    .timeline_component {
+        padding-left: 30px;
     }
-    
-    .timeline_text h3::before {
-        /* Joga a data para dentro do título no celular */
-        content: attr(data-date); 
+
+    .timeline_component::before {
+        left: 10px;
+        top: 60px;
+    }
+
+    .timeline_item::before {
+        left: -24px;
+    }
+
+    .era-marker {
+        padding-left: 20px;
+    }
+
+    .era-marker::before {
+        left: -26px;
+    }
+
+    .timeline_date {
+        display: none;
+    }
+
+    .timeline_card {
+        padding: 20px;
+    }
+
+    .timeline_card h3::before {
+        content: attr(data-year);
         display: block;
-        font-size: 0.9em;
-        color: #666;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.75rem;
+        color: #606080;
+        margin-bottom: 8px;
+        font-weight: 400;
     }
-    
-    /* Ajusta a linha para a esquerda */
-    .timeline_background-line, 
-    .timeline_progress-bar {
-        left: 25px; /* Metade da coluna de 50px */
-        transform: translateX(-50%);
+
+    .modal-body {
+        padding: 30px 20px;
     }
+
+    .modal-body h2 {
+        font-size: 1.7rem;
+    }
+
+    .modal-close {
+        top: 12px;
+        right: 12px;
+        width: 38px;
+        height: 38px;
+    }
+}
+
+.btn-voltar-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1100;
 }

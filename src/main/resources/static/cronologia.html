@@ -3,88 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timeline Fixa</title>
+    <title>Cronologia Literária Brasileira</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="cronologia.css">
 </head>
 <body>
 
     <div class="page-wrapper">
+        <div class="btn-voltar-container">
+            <a href="index.html" class="btn-voltar">
+                <i class="bx bx-arrow-back"></i>
+                Voltar à Estante
+            </a>
+        </div>
+
+
         <div class="container">
-            
+
             <div class="section-heading">
                 <h2>Literatura Brasileira</h2>
+                <p class="subtitle">Uma jornada através dos movimentos literários</p>
             </div>
 
             <div class="timeline_component">
-                
-                <div class="timeline_progress-bar"></div>
-                
-                <div class="timeline_background-line"></div>
 
+                <!-- ERA COLONIAL -->
+                <div class="era-marker" data-era="colonial">
+                    <span>Era Colonial</span>
+                    <small>1500 - 1822</small>
+                </div>
+
+                <!-- QUINHENTISMO -->
                 <div class="timeline_item">
-                    <div class="timeline_left">
-                        <div class="timeline_date-text">1500</div>
-                    </div>
-                    <div class="timeline_centre">
-                        <div class="timeline_circle"></div>
-                    </div>
-                    <div class="timeline_right">
-                        <div class="timeline_text">
-                            <h3>Quinhentismo</h3>
-                            <p>A literatura de informação. A Carta de Pero Vaz de Caminha descreve o deslumbramento e o estranhamento com a nova terra. É o registro inicial, focado na descrição da fauna, flora e dos nativos, sem ainda uma identidade nacional formada.</p>
-                        </div>
+                    <div class="timeline_date">1500</div>
+                    <div class="timeline_card" data-period="quinhentismo">
+                        <span class="era-badge colonial">Era Colonial</span>
+                        <h3>Quinhentismo</h3>
+                        <p>A literatura de informação. A Carta de Pero Vaz de Caminha descreve o deslumbramento e o estranhamento com a nova terra. É o registro inicial, focado na descrição da fauna, flora e dos nativos.</p>
+                        <span class="click-hint">Clique para saber mais</span>
                     </div>
                 </div>
 
+                <!-- BARROCO -->
                 <div class="timeline_item">
-                    <div class="timeline_left">
-                        <div class="timeline_date-text">1857</div>
-                    </div>
-                    <div class="timeline_centre">
-                        <div class="timeline_circle"></div>
-                    </div>
-                    <div class="timeline_right">
-                        <div class="timeline_text">
-                            <h3>Romantismo</h3>
-                            <p>José de Alencar publica "O Guarani". Aqui vemos a construção do herói nacional indígena e a idealização da natureza tropical. O Romantismo busca definir o que é ser brasileiro, muitas vezes ignorando as contradições sociais em prol de um projeto de nação.</p>
-                        </div>
+                    <div class="timeline_date">1601</div>
+                    <div class="timeline_card" data-period="barroco">
+                        <span class="era-badge colonial">Era Colonial</span>
+                        <h3>Barroco</h3>
+                        <p>A arte dos contrastes. O conflito entre o sagrado e o profano. Gregório de Matos, o "Boca do Inferno", criticava a sociedade baiana, enquanto Padre Antônio Vieira pregava sermões de retórica impecável.</p>
+                        <span class="click-hint">Clique para saber mais</span>
                     </div>
                 </div>
 
+                <!-- ARCADISMO -->
                 <div class="timeline_item">
-                    <div class="timeline_left">
-                        <div class="timeline_date-text">1881</div>
-                    </div>
-                    <div class="timeline_centre">
-                        <div class="timeline_circle"></div>
-                    </div>
-                    <div class="timeline_right">
-                        <div class="timeline_text">
-                            <h3>Realismo</h3>
-                            <p>A virada de chave. Machado de Assis lança "Memórias Póstumas de Brás Cubas". A ironia fina, o pessimismo e a crítica social profunda substituem o sonho romântico. O foco sai da natureza e vai para a psicologia humana e a hipocrisia da sociedade burguesa.</p>
-                        </div>
+                    <div class="timeline_date">1768</div>
+                    <div class="timeline_card" data-period="arcadismo">
+                        <span class="era-badge colonial">Era Colonial</span>
+                        <h3>Arcadismo</h3>
+                        <p>O retorno à simplicidade. Inspirados nos ideais iluministas, os árcades buscavam a vida bucólica. Tomás Antônio Gonzaga escreveu "Marília de Dirceu". Muitos participaram da Inconfidência Mineira.</p>
+                        <span class="click-hint">Clique para saber mais</span>
                     </div>
                 </div>
 
+                <!-- ERA NACIONAL -->
+                <div class="era-marker" data-era="nacional">
+                    <span>Era Nacional</span>
+                    <small>1822 em diante</small>
+                </div>
+
+                <!-- ROMANTISMO -->
                 <div class="timeline_item">
-                    <div class="timeline_left">
-                        <div class="timeline_date-text">1922</div>
-                    </div>
-                    <div class="timeline_centre">
-                        <div class="timeline_circle"></div>
-                    </div>
-                    <div class="timeline_right">
-                        <div class="timeline_text">
-                            <h3>Modernismo</h3>
-                            <p>A Semana de Arte Moderna. O "grito" antropofágico que devora a cultura estrangeira para criar uma arte genuinamente brasileira, livre de amarras acadêmicas. Mário e Oswald de Andrade lideram essa revolução estética.</p>
-                        </div>
+                    <div class="timeline_date">1836</div>
+                    <div class="timeline_card" data-period="romantismo">
+                        <span class="era-badge nacional">Era Nacional</span>
+                        <h3>Romantismo</h3>
+                        <p>O movimento que construiu a identidade nacional brasileira. Dividido em três gerações: a Indianista, a Ultrarromântica (Mal do Século) e a Condoreira (Social). De Gonçalves Dias a Castro Alves.</p>
+                        <span class="click-hint">Clique para ver as 3 fases</span>
                     </div>
                 </div>
 
-                <div style="height: 50vh;"></div>
+                <!-- REALISMO -->
+                <div class="timeline_item">
+                    <div class="timeline_date">1881</div>
+                    <div class="timeline_card" data-period="realismo">
+                        <span class="era-badge nacional">Era Nacional</span>
+                        <h3>Realismo</h3>
+                        <p>A virada de chave. Machado de Assis lança "Memórias Póstumas de Brás Cubas". A ironia fina e a crítica social profunda substituem o sonho romântico. Foco na psicologia humana.</p>
+                        <span class="click-hint">Clique para saber mais</span>
+                    </div>
+                </div>
+
+                <!-- NATURALISMO -->
+                <div class="timeline_item">
+                    <div class="timeline_date">1881</div>
+                    <div class="timeline_card" data-period="naturalismo">
+                        <span class="era-badge nacional">Era Nacional</span>
+                        <h3>Naturalismo</h3>
+                        <p>O determinismo em ação. Aluísio Azevedo em "O Cortiço" mostra como o meio, a raça e o momento histórico determinam o destino humano. Uma visão científica e crua da sociedade.</p>
+                        <span class="click-hint">Clique para saber mais</span>
+                    </div>
+                </div>
+
+                <!-- PARNASIANISMO -->
+                <div class="timeline_item">
+                    <div class="timeline_date">1882</div>
+                    <div class="timeline_card" data-period="parnasianismo">
+                        <span class="era-badge nacional">Era Nacional</span>
+                        <h3>Parnasianismo</h3>
+                        <p>A arte pela arte. Olavo Bilac e a tríade parnasiana buscavam a perfeição formal, com versos metrificados e vocabulário erudito. Poesia bela como escultura grega.</p>
+                        <span class="click-hint">Clique para saber mais</span>
+                    </div>
+                </div>
+
+                <!-- SIMBOLISMO -->
+                <div class="timeline_item">
+                    <div class="timeline_date">1893</div>
+                    <div class="timeline_card" data-period="simbolismo">
+                        <span class="era-badge nacional">Era Nacional</span>
+                        <h3>Simbolismo</h3>
+                        <p>A poesia como música e mistério. Cruz e Sousa, o "Dante Negro", trouxe versos repletos de sinestesias e espiritualidade. Uma escola marginalizada, mas profundamente influente.</p>
+                        <span class="click-hint">Clique para saber mais</span>
+                    </div>
+                </div>
+
+                <!-- PRÉ-MODERNISMO -->
+                <div class="timeline_item">
+                    <div class="timeline_date">1902</div>
+                    <div class="timeline_card" data-period="pre-modernismo">
+                        <span class="era-badge nacional">Era Nacional</span>
+                        <h3>Pré-Modernismo</h3>
+                        <p>A transição inquieta. Euclides da Cunha denunciou Canudos em "Os Sertões". Lima Barreto expôs o racismo. Monteiro Lobato retratou o caipira. O Brasil real aparecia na literatura.</p>
+                        <span class="click-hint">Clique para saber mais</span>
+                    </div>
+                </div>
+
+                <!-- MODERNISMO -->
+                <div class="timeline_item">
+                    <div class="timeline_date">1922</div>
+                    <div class="timeline_card" data-period="modernismo">
+                        <span class="era-badge nacional">Era Nacional</span>
+                        <h3>Modernismo</h3>
+                        <p>A revolução estética brasileira. Da Semana de 22 ao experimentalismo de Guimarães Rosa. Três fases: a ruptura antropofágica, o regionalismo social, e a experimentação universal.</p>
+                        <span class="click-hint">Clique para ver as 3 fases</span>
+                    </div>
+                </div>
+
+                <!-- LITERATURA CONTEMPORÂNEA -->
+                <div class="timeline_item">
+                    <div class="timeline_date">1960</div>
+                    <div class="timeline_card" data-period="contemporaneo">
+                        <span class="era-badge nacional">Era Nacional</span>
+                        <h3>Literatura Contemporânea</h3>
+                        <p>A pluralidade de vozes. Da poesia concreta às narrativas urbanas, da literatura marginal às novas vozes. Uma literatura que reflete um Brasil complexo e em constante transformação.</p>
+                        <span class="click-hint">Clique para saber mais</span>
+                    </div>
+                </div>
+
+                <div class="timeline_end"></div>
 
             </div>
         </div>
     </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="cronologia.js"></script>
 </body>
 </html>
