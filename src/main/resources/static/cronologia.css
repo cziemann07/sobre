@@ -4,8 +4,8 @@
 
 body {
     margin: 0;
-    background-color: #080810;
-    color: #e0e0e0;
+    background-color: #f4efe6; /* warm parchment */
+    color: #2c1e14; /* dark warm text */
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     overflow-x: hidden;
     line-height: 1.6;
@@ -27,13 +27,13 @@ body {
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 3.2rem;
     font-weight: 600;
-    background: linear-gradient(135deg, #a8e6cf 0%, #7fcdcd 50%, #a8b5e6 100%);
+    background: linear-gradient(135deg, #8b5a2b 0%, #c9b896 50%, #6b5344 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin: 0 0 15px 0;
     letter-spacing: -0.5px;
-}
+} 
 
 .section-heading .subtitle {
     color: #606080;
@@ -62,11 +62,11 @@ body {
     background: linear-gradient(
         to bottom,
         transparent 0%,
-        #2a2a40 3%,
-        #2a2a40 97%,
+        #c9b896 3%,
+        #c9b896 97%,
         transparent 100%
     );
-}
+} 
 
 /* ========== MARCADOR DE ERA ========== */
 .era-marker {
@@ -85,19 +85,20 @@ body {
 
 .era-marker small {
     display: block;
-    color: #505070;
+    color: #6b5344;
     font-size: 0.85rem;
     margin-top: 5px;
     font-weight: 300;
-}
+} 
 
 .era-marker[data-era="colonial"] span {
     color: #c9b896;
 }
 
+/* Ajuste: cor do marcador da Era Nacional */
 .era-marker[data-era="nacional"] span {
-    color: #96c9b8;
-}
+    color: #8b5a2b; /* substitui o tom esverdeado por um tom quente */
+} 
 
 /* Bolinha na linha para era */
 .era-marker::before {
@@ -107,10 +108,10 @@ body {
     top: 55px;
     width: 14px;
     height: 14px;
-    background: #080810;
-    border: 2px solid #505070;
+    background: #f4efe6;
+    border: 2px solid #c9b896;
     border-radius: 50%;
-}
+} 
 
 /* ========== ITEM DA TIMELINE ========== */
 .timeline_item {
@@ -129,52 +130,53 @@ body {
     top: 25px;
     width: 10px;
     height: 10px;
-    background: #080810;
-    border: 2px solid #3a3a50;
+    background: #fffdf5;
+    border: 2px solid #e0d6c2;
     border-radius: 50%;
     transition: all 0.3s ease;
     z-index: 2;
-}
+} 
 
 .timeline_item:hover::before {
-    border-color: #7fcdcd;
-    box-shadow: 0 0 12px rgba(127, 205, 205, 0.4);
-}
+    border-color: #8b5a2b;
+    box-shadow: 0 0 12px rgba(139, 90, 43, 0.25);
+} 
 
 /* ========== DATA ========== */
 .timeline_date {
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 1.4rem;
     font-weight: 500;
-    color: #7a7a9a;
+    color: #7a5a3a;
     min-width: 60px;
     padding-top: 18px;
     transition: color 0.3s ease;
-}
+} 
 
+/* Ajuste: cor do hover da data (personalize aqui) */
 .timeline_item:hover .timeline_date {
-    color: #a8e6cf;
-}
+    color: #8b5a2b; /* cor quente e consistente com o projeto */
+} 
 
 /* ========== CARD ========== */
 .timeline_card {
     flex: 1;
-    background: linear-gradient(145deg, #12121a 0%, #0e0e16 100%);
+    background: linear-gradient(145deg, #fffdf5 0%, #f7f0e0 100%);
     padding: 25px 30px;
     border-radius: 12px;
-    border: 1px solid #1a1a2a;
+    border: 1px solid #e0d6c2;
     cursor: pointer;
     position: relative;
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
+} 
 
 .timeline_card:hover {
     transform: translateY(-4px);
-    border-color: #3a4a5a;
+    border-color: #8b5a2b;
     box-shadow:
-        0 15px 35px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(127, 205, 205, 0.1);
-}
+        0 15px 35px rgba(139, 90, 43, 0.06),
+        0 0 0 1px rgba(139, 90, 43, 0.04);
+} 
 
 .timeline_card:active {
     transform: translateY(-2px);
@@ -198,39 +200,40 @@ body {
     border: 1px solid rgba(201, 184, 150, 0.2);
 }
 
+/* Ajuste: estilo para badges da Era Nacional (personalize aqui) */
 .era-badge.nacional {
-    background: rgba(150, 201, 184, 0.15);
-    color: #96c9b8;
-    border: 1px solid rgba(150, 201, 184, 0.2);
+    background: rgba(139, 90, 43, 0.08);
+    color: #8b5a2b;
+    border: 1px solid rgba(139, 90, 43, 0.12);
 }
 
 /* ========== CONTEÚDO DO CARD ========== */
 .timeline_card h3 {
     font-family: 'Playfair Display', Georgia, serif;
     margin: 0 0 12px 0;
-    color: #e8e8f0;
+    color: #2c1e14;
     font-size: 1.35rem;
     font-weight: 500;
     transition: color 0.3s ease;
-}
+} 
 
 .timeline_card:hover h3 {
-    color: #a8e6cf;
-}
+    color: #8b5a2b;
+} 
 
 .timeline_card p {
     margin: 0;
-    color: #8888a0;
+    color: #4a3728;
     font-size: 0.92rem;
     line-height: 1.7;
     font-weight: 300;
-}
+} 
 
 .click-hint {
     display: block;
     margin-top: 15px;
     font-size: 0.7rem;
-    color: #4a4a60;
+    color: #8b5a2b;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-weight: 500;
@@ -238,8 +241,8 @@ body {
 }
 
 .timeline_card:hover .click-hint {
-    color: #7fcdcd;
-}
+    color: #6b5344;
+} 
 
 /* ========== FIM DA TIMELINE ========== */
 .timeline_end {
@@ -253,8 +256,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(8, 8, 16, 0.95);
-    backdrop-filter: blur(8px);
+    background: rgba(244, 236, 220, 0.95);
+    backdrop-filter: blur(6px);
     z-index: 1000;
     display: flex;
     justify-content: center;
@@ -270,29 +273,29 @@ body {
 }
 
 .modal-content {
-    background: linear-gradient(145deg, #12121a 0%, #0a0a12 100%);
+    background: linear-gradient(145deg, #fffdf5 0%, #f7f0e0 100%);
     border-radius: 16px;
     max-width: 750px;
     width: 90%;
     max-height: 85vh;
     overflow-y: auto;
     position: relative;
-    border: 1px solid #1a1a2a;
+    border: 1px solid #e0d6c2;
     transform: scale(0.9) translateY(30px);
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .modal-overlay.active .modal-content {
     transform: scale(1) translateY(0);
-}
+} 
 
 .modal-close {
     position: absolute;
     top: 20px;
     right: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid #2a2a3a;
-    color: #808090;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e0d6c2;
+    color: #6b5344;
     font-size: 1.5rem;
     width: 44px;
     height: 44px;
@@ -306,10 +309,10 @@ body {
 }
 
 .modal-close:hover {
-    background: rgba(127, 205, 205, 0.1);
-    border-color: #7fcdcd;
-    color: #7fcdcd;
-}
+    background: rgba(139, 90, 43, 0.08);
+    border-color: #8b5a2b;
+    color: #8b5a2b;
+} 
 
 .modal-body {
     padding: 45px;
@@ -320,11 +323,11 @@ body {
     font-size: 2.2rem;
     font-weight: 600;
     margin: 0 0 8px 0;
-    color: #e8e8f0;
+    color: #2c1e14;
 }
 
 .modal-body .modal-period {
-    color: #606080;
+    color: #6b5344;
     font-size: 0.95rem;
     margin-bottom: 15px;
     font-weight: 300;
@@ -347,33 +350,35 @@ body {
     border: 1px solid rgba(201, 184, 150, 0.2);
 }
 
+/* Ajuste: estilo da modal-era.nacional (personalize aqui) */
 .modal-body .modal-era.nacional {
-    background: rgba(150, 201, 184, 0.15);
-    color: #96c9b8;
-    border: 1px solid rgba(150, 201, 184, 0.2);
-}
+    background: rgba(139, 90, 43, 0.08);
+    color: #8b5a2b;
+    border: 1px solid rgba(139, 90, 43, 0.12);
+} 
 
 .modal-body .modal-description {
     font-size: 1rem;
     line-height: 1.8;
-    color: #a0a0b0;
+    color: #5a4a3a;
     margin-bottom: 30px;
     font-weight: 300;
-}
+} 
 
 .modal-body .modal-section {
     margin-bottom: 28px;
 }
 
+/* Ajuste: título das seções do modal (personalize aqui) */
 .modal-body .modal-section h3 {
     font-family: 'Playfair Display', Georgia, serif;
-    color: #a8e6cf;
+    color: #8b5a2b;
     font-size: 1.15rem;
     font-weight: 500;
     margin-bottom: 15px;
     padding-bottom: 8px;
-    border-bottom: 1px solid #1a1a2a;
-}
+    border-bottom: 1px solid rgba(139, 90, 43, 0.06);
+} 
 
 .modal-body ul {
     list-style: none;
@@ -381,19 +386,22 @@ body {
     margin: 0;
 }
 
+/* Ajuste: itens das listas do modal (mais legíveis) */
 .modal-body ul li {
     padding: 10px 0;
     padding-left: 18px;
     position: relative;
-    color: #8888a0;
-    font-size: 0.9rem;
-    border-bottom: 1px solid #12121a;
-}
+    color: #4a3728; /* texto mais escuro e legível */
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba(139, 90, 43, 0.06);
+} 
 
 .modal-body ul li:last-child {
     border-bottom: none;
 }
 
+/* Ajuste: cor dos bullets nas listas do modal (personalize aqui) */
+/* Ajuste: cor dos bullets nas listas do modal (personalize aqui) */
 .modal-body ul li::before {
     content: '';
     position: absolute;
@@ -402,19 +410,20 @@ body {
     transform: translateY(-50%);
     width: 6px;
     height: 6px;
-    background: #7fcdcd;
+    background: #8b5a2b;
     border-radius: 50%;
 }
 
+/* Ajuste: destaque do autor (mais legível) */
 .modal-body .author-highlight {
-    color: #d0d0e0;
-    font-weight: 500;
+    color: #4a3728; /* tom escuro e quente para boa leitura */
+    font-weight: 600; /* ligeiramente mais forte */
 }
 
 .modal-body .work-title {
-    color: #a8b5e6;
+    color: #a38a6a; /* tom quente para títulos de obras */
     font-style: italic;
-}
+} 
 
 /* ========== FASES (Romantismo/Modernismo) ========== */
 .modal-fases {
@@ -431,21 +440,22 @@ body {
     transition: all 0.25s ease;
 }
 
+/* Ajuste: cores das fases do modal e tags (personalize aqui) */
 .modal-fases .fase-card:hover {
-    border-color: #2a3a4a;
-    background: rgba(127, 205, 205, 0.02);
+    border-color: rgba(139, 90, 43, 0.12);
+    background: rgba(139, 90, 43, 0.03);
 }
 
 .modal-fases .fase-card h4 {
     font-family: 'Playfair Display', Georgia, serif;
-    color: #a8e6cf;
+    color: #8b5a2b;
     font-size: 1.05rem;
     font-weight: 500;
     margin: 0 0 10px 0;
 }
 
 .modal-fases .fase-card p {
-    color: #8888a0;
+    color: #5a4a3a;
     line-height: 1.7;
     margin: 0 0 12px 0;
     font-size: 0.88rem;
@@ -459,8 +469,8 @@ body {
 }
 
 .modal-fases .fase-card .autor-tag {
-    background: rgba(168, 181, 230, 0.1);
-    color: #a8b5e6;
+    background: rgba(216, 195, 165, 0.12);
+    color: #8b5a2b;
     padding: 3px 10px;
     border-radius: 4px;
     font-size: 0.75rem;
@@ -473,16 +483,16 @@ body {
 }
 
 .modal-content::-webkit-scrollbar-track {
-    background: #0a0a12;
+    background: #f7f0e0;
 }
 
 .modal-content::-webkit-scrollbar-thumb {
-    background: #2a2a3a;
+    background: #e0d6c2;
     border-radius: 3px;
 }
 
 .modal-content::-webkit-scrollbar-thumb:hover {
-    background: #3a3a4a;
+    background: #d4c4a8;
 }
 
 /* ========== RESPONSIVO ========== */
@@ -554,9 +564,38 @@ body {
     }
 }
 
+/* Make the back button fixed and slightly offset from edges */
 .btn-voltar-container {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 1100;
+    position: fixed;
+    top: 18px; /* distância do topo - customize aqui */
+    left: 18px; /* distância da esquerda - customize aqui */
+    z-index: 140;
+}
+
+.btn-voltar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    background: linear-gradient(145deg, #fffef8 0%, #fbf1dc 100%); /* mais claro */
+    border: 1px solid #e6d7bf; /* borda mais suave */
+    border-radius: 8px;
+    color: #5a3f2b; /* texto ligeiramente mais escuro que o fundo */
+    font-family: 'Merriweather', serif;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.22s ease;
+    box-shadow: 0 6px 18px rgba(90, 60, 36, 0.06);
+    max-width: fit-content;
+}
+
+.btn-voltar:hover {
+    background: #e6d0aa; /* hover mais quente, ainda coerente */
+    color: #2c1e14;
+}
+
+/* Responsive: reduce offset on very small screens */
+@media screen and (max-width: 480px) {
+    .btn-voltar-container { top: 12px; left: 12px; }
+    .btn-voltar { padding: 8px 14px; font-size: 0.85rem; }
 }
