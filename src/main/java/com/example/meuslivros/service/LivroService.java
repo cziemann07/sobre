@@ -269,6 +269,15 @@ public class LivroService {
             "/imagens/80-dias.jpg"
         ));
 
+        estante.add(new Livro(
+            "Sete Breves Lições de Física",
+            "Carlo Rovelli",
+            """
+            Uma obra-prima de concisão e clareza, Sete Breves Lições de Física é uma introdução magistral aos conceitos mais profundos e revolucionários da física moderna, escrita por Carlo Rovelli com uma elegância que torna a obra acessível não apenas aos cientistas, mas a qualquer leitor curioso sobre o universo. Em sua Obra, Rovelli consegue destilar temas complexos como a relatividade geral, a mecânica quântica e a gravidade quântica em narrativas breves e envolventes, revelando a beleza intrínseca da ciência e sua capacidade de transformar nossa compreensão do cosmos. A genialidade do livro reside na habilidade de Rovelli em conectar essas ideias abstratas com questões filosóficas fundamentais sobre a natureza da realidade, o tempo e o espaço, convidando o leitor a refletir sobre o papel da ciência na busca pelo conhecimento humano. É uma leitura essencial que não apenas informa, mas inspira, mostrando que a física é uma aventura intelectual que está ao alcance de todos. Até hoje, ainda me é difícil compreender a ideia da gravidade quântica, mas a forma como Rovelli a apresenta me faz sentir que estou apenas a um passo de desvendar essas ondulações do espaço-tempo.
+            """,
+            "/imagens/sete-breves-licoes.jpg"
+        ));
+
         return estante;
     }
 }
