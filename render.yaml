@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: meus-livros
+    runtime: docker
+    plan: free
+    autoDeploy: true

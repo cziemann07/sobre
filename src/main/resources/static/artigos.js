@@ -7,11 +7,25 @@ document.addEventListener('DOMContentLoaded', () => {
 // e atualizar o conteúdo da página
 async function carregarArtigos() {
     try {
+        const params = new URLSearchParams(window.location.search);
+        const modulo = params.get('modulo');
+        const tituloPorModulo = {
+            EDUCACAO: 'Educacao',
+            ARTIGO: 'Artigo',
+            POEMA: 'Poema'
+        };
+
         // javascript vai até a rota do controller que retorna os artigos em formato JSON
-        const resposta = await fetch('/api/artigos');
+        const url = modulo ? `/api/artigos?modulo=${encodeURIComponent(modulo)}` : '/api/artigos';
+        const resposta = await fetch(url);
 
         // converte a resposta (lista de objetos) para JSON (JavaScript Object Notation)
         const artigos = await resposta.json();
+
+        const header = document.querySelector('.header-blog h2');
+        if (header && modulo && tituloPorModulo[modulo]) {
+            header.textContent = `Modulo: ${tituloPorModulo[modulo]}`;
+        }
 
         // limpa o "carregando textos..." 
         const container = document.getElementById('container-artigos');
@@ -24,7 +38,7 @@ async function carregarArtigos() {
 
             card.innerHTML = `
                 <h3>${artigo.titulo}</h3>
-                <small>Publicado em ${artigo.data} por ${artigo.autor}</small>
+                <small>[${artigo.modulo}] Publicado em ${artigo.data} por ${artigo.autor}</small>
                 <p>${artigo.resumo}</p>
                 <button class="ler-mais">Ler Completo</button>
             `;

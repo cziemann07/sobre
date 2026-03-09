@@ -7,6 +7,9 @@ import com.example.meuslivros.model.PaisLiterario;
 
 @Service
 public class MapaService {
+    private static final int LIMITE_PADRAO = 50;
+    private static final int LIMITE_MINIMO = 1;
+    private static final int LIMITE_MAXIMO = 200;
 
     public List<PaisLiterario> getDadosMapa() {
         List<PaisLiterario> mundo = new ArrayList<>();
@@ -48,5 +51,21 @@ public class MapaService {
         mundo.add(new PaisLiterario("COL", "Colômbia", "Gabriel García Márquez", 0, false));
 
         return mundo;
+    }
+
+    public List<PaisLiterario> getDadosMapa(Integer limite) {
+        int limiteValidado = validarLimite(limite);
+        List<PaisLiterario> mundo = getDadosMapa();
+        return mundo.subList(0, Math.min(limiteValidado, mundo.size()));
+    }
+
+    private int validarLimite(Integer limite) {
+        if (limite == null) {
+            return LIMITE_PADRAO;
+        }
+        if (limite < LIMITE_MINIMO || limite > LIMITE_MAXIMO) {
+            throw new IllegalArgumentException("O parametro 'limite' deve estar entre 1 e 200.");
+        }
+        return limite;
     }
 }

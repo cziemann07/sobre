@@ -1,6 +1,7 @@
 package com.example.meuslivros.controller;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping; // importa a anotação getmapping do spring, ela que mapeia requisições http do tipo get
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping; // importa a anotação requestmapping do spring, que mapeia requisições http para métodos do controller
 import org.springframework.web.bind.annotation.RestController; // importa a anotação restcontroller do spring, que indica que essa classe é um controller rest
 import com.example.meuslivros.model.Livro; 
@@ -19,7 +20,7 @@ public class LivroController {
     }
 
     @GetMapping
-    public List<Livro> listarLivros() {
-        return service.getMeusLivros(); // retorna o json com meus livros
+    public List<Livro> listarLivros(@RequestParam(defaultValue = "50") Integer limite) {
+        return service.getMeusLivros(limite); // retorna o json com meus livros
     }
 }

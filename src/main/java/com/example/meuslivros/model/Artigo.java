@@ -6,15 +6,17 @@ public class Artigo {
     private String titulo;
     private String autor;
     private String data;
+    private String modulo;
     private String resumo;
     private String conteudoHtml;
 
     // construtor
-    public Artigo(String id, String titulo, String autor, String data, String resumo, String conteudoHtml) {
+    public Artigo(String id, String titulo, String autor, String data, String modulo, String resumo, String conteudoHtml) {
         this.id = id;
         this.titulo = titulo;
         this.autor = autor;
         this.data = data;
+        this.modulo = modulo;
         this.resumo = resumo;
         this.conteudoHtml = conteudoHtml;
     }
@@ -43,6 +45,12 @@ public class Artigo {
     }
     public void setData(String data) {
         this.data = data;
+    }
+    public String getModulo() {
+        return modulo;
+    }
+    public void setModulo(String modulo) {
+        this.modulo = modulo;
     }
     public String getResumo() {
         return resumo;

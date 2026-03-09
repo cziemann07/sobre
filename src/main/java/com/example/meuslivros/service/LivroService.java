@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service; // importa a anotação service d
 
 @Service
 public class LivroService {
+    private static final int LIMITE_PADRAO = 50;
+    private static final int LIMITE_MINIMO = 1;
+    private static final int LIMITE_MAXIMO = 200;
+
     // metódo que cria uma lista de livros e retorna essa lista
 
     public List<Livro> getMeusLivros() {
@@ -279,5 +283,21 @@ public class LivroService {
         ));
 
         return estante;
+    }
+
+    public List<Livro> getMeusLivros(Integer limite) {
+        int limiteValidado = validarLimite(limite);
+        List<Livro> estante = getMeusLivros();
+        return estante.subList(0, Math.min(limiteValidado, estante.size()));
+    }
+
+    private int validarLimite(Integer limite) {
+        if (limite == null) {
+            return LIMITE_PADRAO;
+        }
+        if (limite < LIMITE_MINIMO || limite > LIMITE_MAXIMO) {
+            throw new IllegalArgumentException("O parametro 'limite' deve estar entre 1 e 200.");
+        }
+        return limite;
     }
 }
