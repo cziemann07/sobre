@@ -1,0 +1,381 @@
+/* ============================================
+   ANALOGIAS - CSS do módulo Literatura ↔ TI
+   
+   Este arquivo é COMPLEMENTAR ao style.css.
+   Herda: fontes, cores base, navbar, body.
+   Adiciona: identidade visual do módulo.
+   ============================================ */
+
+/* ---- Variáveis do módulo ---- */
+:root {
+    --ana-papel: #fffdf5;
+    --ana-papel-escuro: #f4e4bc;
+    --ana-marrom: #8b5a2b;
+    --ana-marrom-escuro: #2c1e14;
+    --ana-marrom-medio: #4a3b32;
+    --ana-accent: #c4651a;        /* laranja queimado — o "compilado" */
+    --ana-terminal: #0d1117;      /* fundo escuro tipo terminal */
+    --ana-terminal-text: #c9d1d9; /* texto de terminal */
+    --ana-verde-code: #7ee787;    /* verde de sintaxe */
+}
+
+/* ---- Hero do módulo ---- */
+.analogias-hero {
+    text-align: center;
+    padding: 60px 20px 40px;
+    position: relative;
+}
+
+.hero-tag {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+    color: var(--ana-accent);
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeSlideUp 0.6s ease forwards;
+}
+
+.hero-titulo {
+    font-family: 'Georgia', serif;
+    font-size: 2.6rem;
+    color: var(--ana-marrom-escuro);
+    margin: 0 0 16px;
+    font-weight: normal;
+    opacity: 0;
+    animation: fadeSlideUp 0.6s ease 0.15s forwards;
+}
+
+.hero-titulo .operador {
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--ana-accent);
+    font-weight: bold;
+}
+
+.hero-subtitulo {
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    color: var(--ana-marrom-medio);
+    font-style: italic;
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto 24px;
+    opacity: 0;
+    animation: fadeSlideUp 0.6s ease 0.3s forwards;
+}
+
+.hero-linha {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--ana-marrom), var(--ana-accent));
+    margin: 0 auto;
+    border-radius: 2px;
+    opacity: 0;
+    animation: fadeSlideUp 0.6s ease 0.45s forwards;
+}
+
+/* ---- Loading state ---- */
+.loading-msg {
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--ana-marrom-medio);
+    font-size: 0.95rem;
+    padding: 40px;
+}
+
+.loading-cursor {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* ---- Grade de cards ---- */
+.grade-analogias {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 28px;
+}
+
+/* ---- Card da analogia ---- */
+.analogia-card {
+    background: var(--ana-papel);
+    border: 1px solid #e0d5c3;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 3px 3px 12px rgba(44, 30, 20, 0.08);
+    
+    /* animação de entrada */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: cardEntrada 0.5s ease forwards;
+}
+
+.analogia-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 6px 10px 28px rgba(44, 30, 20, 0.18);
+}
+
+/* Header do card — faixa escura estilo terminal */
+.card-header-tech {
+    background: var(--ana-terminal);
+    padding: 16px 20px;
+    position: relative;
+}
+
+/* Bolinhas de terminal (vermelho, amarelo, verde) */
+.card-header-tech::before {
+    content: '● ● ●';
+    font-size: 0.55rem;
+    letter-spacing: 4px;
+    color: #f85149;
+    position: absolute;
+    top: 8px;
+    left: 14px;
+}
+
+.card-conceito-tech {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.75rem;
+    color: var(--ana-verde-code);
+    letter-spacing: 1px;
+    display: block;
+    margin-top: 8px;
+    text-transform: uppercase;
+}
+
+.card-titulo {
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    color: var(--ana-terminal-text);
+    margin: 8px 0 0;
+    line-height: 1.4;
+    font-weight: normal;
+}
+
+/* Body do card — zona literária */
+.card-body-lit {
+    padding: 20px;
+}
+
+.card-livro {
+    font-family: 'Georgia', serif;
+    font-size: 1rem;
+    color: var(--ana-marrom-escuro);
+    font-style: italic;
+    margin: 0 0 4px;
+}
+
+.card-autor {
+    font-family: 'Georgia', serif;
+    font-size: 0.85rem;
+    color: var(--ana-marrom);
+    margin: 0 0 14px;
+}
+
+.card-preview {
+    font-family: 'Georgia', serif;
+    font-size: 0.9rem;
+    color: var(--ana-marrom-medio);
+    line-height: 1.6;
+    margin: 0 0 16px;
+    /* limita a 3 linhas */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-ler-mais {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8rem;
+    color: var(--ana-accent);
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: color 0.2s ease;
+}
+
+.analogia-card:hover .card-ler-mais {
+    color: var(--ana-marrom-escuro);
+}
+
+/* ---- Animação de entrada escalonada dos cards ---- */
+@keyframes cardEntrada {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Delay escalonado — aplicado via JS com --delay */
+
+/* ---- Modal de leitura ---- */
+.modal-analogia {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(13, 17, 23, 0.85); /* fundo escuro tipo terminal */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-analogia-content {
+    background: var(--ana-papel);
+    max-width: 720px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+
+    /* animação de abertura */
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.modal-analogia.aberto .modal-analogia-content {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.btn-close-analogia {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--ana-terminal-text);
+    z-index: 10;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.btn-close-analogia:hover {
+    color: var(--ana-accent);
+}
+
+/* Header do modal — faixa escura */
+.modal-analogia-header {
+    background: var(--ana-terminal);
+    padding: 30px 35px 24px;
+    border-radius: 8px 8px 0 0;
+}
+
+.modal-tag-tech {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.75rem;
+    color: var(--ana-verde-code);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: inline-block;
+    background: rgba(126, 231, 135, 0.1);
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid rgba(126, 231, 135, 0.2);
+}
+
+.modal-analogia-header h2 {
+    font-family: 'Georgia', serif;
+    font-size: 1.6rem;
+    color: var(--ana-terminal-text);
+    margin: 14px 0 10px;
+    font-weight: normal;
+    line-height: 1.4;
+    padding-right: 30px; /* espaço pro botão fechar */
+}
+
+.modal-meta {
+    font-family: 'Georgia', serif;
+    font-size: 0.95rem;
+    color: #8b949e;
+    font-style: italic;
+    margin: 0;
+}
+
+/* Body do modal — zona literária/texto */
+.modal-analogia-body {
+    padding: 30px 35px 40px;
+}
+
+.modal-analogia-body p {
+    font-family: 'Georgia', serif;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--ana-marrom-medio);
+    text-align: justify;
+    white-space: pre-line; /* preserva as quebras de linha do texto */
+}
+
+/* ---- Responsividade ---- */
+@media (max-width: 768px) {
+    .hero-titulo {
+        font-size: 1.8rem;
+    }
+    
+    .hero-subtitulo {
+        font-size: 0.95rem;
+    }
+
+    .grade-analogias {
+        grid-template-columns: 1fr;
+        padding: 0 16px 40px;
+    }
+
+    .modal-analogia-header {
+        padding: 24px 20px 18px;
+    }
+
+    .modal-analogia-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .modal-analogia-body {
+        padding: 20px 20px 30px;
+    }
+
+    .modal-analogia-body p {
+        font-size: 0.95rem;
+    }
+}
+
+/* ---- Animação geral ---- */
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---- Scrollbar custom dentro do modal ---- */
+.modal-analogia-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-analogia-content::-webkit-scrollbar-track {
+    background: var(--ana-papel-escuro);
+}
+
+.modal-analogia-content::-webkit-scrollbar-thumb {
+    background: var(--ana-marrom);
+    border-radius: 3px;
+}

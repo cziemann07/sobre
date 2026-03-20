@@ -21,6 +21,15 @@ public class ArtigoService {
         List<Artigo> blog = new ArrayList<>();
 
         blog.add(new Artigo(
+                "importancia-leitura",
+                "O Manifesto da Decadencia Intelectual: A Falencia da Leitura no Seculo XXI",
+                "Ziemann",
+                "20/03/2026",
+                "ARTIGO",
+                "Um manifesto provocador sobre a completa falencia da leitura como ferramenta de pensamento critico no Brasil contemporaneo.",
+                carregarHtml("artigos/importancia.html")));
+
+        blog.add(new Artigo(
                 "sistema-educacional-controle",
                 "O Sistema Educacional Como Ferramenta de Controle",
                 "Ziemann",

@@ -56,28 +56,42 @@ async function carregarArtigos() {
 }
 
 function abrirModalArtigo(artigo) {
-    // Vamos criar o modal dinamicamente ou usar um existente
-    // Vou sugerir criar um modal específico para leitura no HTML do artigos.html
-    // Mas aqui vai uma lógica genérica rápida:
-    
-    // Você precisa ter a estrutura do modal no artigos.html também!
     const modal = document.getElementById('modal'); 
     const modalBody = document.querySelector('.modal-body');
     
     // Limpa o modal atual e joga o texto do artigo
-    // Note que aqui eu mudo a estrutura visual pra não ter capa
     modalBody.innerHTML = `
         <div class="artigo-leitura">
             ${artigo.conteudoHtml}
         </div>
     `;
     
-    // Reativa o botão de fechar (pq eu apaguei ele no innerHTML acima)
-    // Uma estratégia melhor seria ter um modal separado só pra texto, mas assim funciona:
-    const btnFechar = document.createElement('button');
-    btnFechar.className = 'btn-close';
-    btnFechar.onclick = () => { modal.style.display = 'none'; };
-    document.querySelector('.modal-content').appendChild(btnFechar);
+    // Garante que o botão de fechar está presente
+    let btnFechar = document.getElementById('btn-close');
+    if (!btnFechar) {
+        btnFechar = document.createElement('button');
+        btnFechar.id = 'btn-close';
+        btnFechar.className = 'btn-close';
+        document.querySelector('.modal-content').appendChild(btnFechar);
+    }
+    
+    // Fecha o modal ao clicar no botão X
+    btnFechar.onclick = (e) => {
+        e.stopPropagation();
+        fecharModal();
+    };
+    
+    // Fecha o modal ao clicar fora do conteúdo (no overlay)
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            fecharModal();
+        }
+    };
 
     modal.style.display = 'flex';
+}
+
+function fecharModal() {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'none';
 }

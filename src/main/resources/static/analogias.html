@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca do Ziemann</title>
+    <title>Analogias | Literatura ↔ TI</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="analogias.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
@@ -17,7 +18,7 @@
                 <div class="nav-links">
                     <ul class="links">
                         <li>
-                            <a href="#">HOME</a>
+                            <a href="index.html">HOME</a>
                         </li>
                         <li class="dropdown">
                             <a href="#">BLOG</a>
@@ -47,31 +48,53 @@
                 </div>
             </div>
         </nav>
-
     </header>
 
-    <main>
-        <div id="container-livros" class="grade-livros">
-            <p>Carregando estante...</p>
-        </div>
+    <main class="analogias-main">
+
+        <!-- Hero do módulo -->
+        <section class="analogias-hero">
+            <div class="hero-content">
+                <span class="hero-tag"></span>
+                <h2 class="hero-titulo">Literatura <span class="operador">↔</span> Tecnologia</h2>
+                <p class="hero-subtitulo">
+                    Onde Machado de Assis debugga state machines<br>
+                    e Jorge Amado arquiteta sistemas distribuídos.
+                </p>
+                <div class="hero-linha"></div>
+            </div>
+        </section>
+
+        <!-- Container dos cards -->
+        <section id="container-analogias" class="grade-analogias">
+            <p class="loading-msg">
+                <span class="loading-cursor">█</span> Compilando analogias...
+            </p>
+        </section>
+
     </main>
 
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <button id="btn-close" class="btn-close"></button>
-            <div class="modal-body">
-                <div class="modal-capa">
-                    <img id="modal-img" src=" " alt="">
-                </div>
+    <!-- Modal de leitura -->
+    <div id="modal-analogia" class="modal-analogia">
+        <div class="modal-analogia-content">
+            <button id="btn-close-analogia" class="btn-close-analogia">
+                <i class="bx bx-x"></i>
+            </button>
+            
+            <div class="modal-analogia-header">
+                <span id="modal-tag" class="modal-tag-tech"></span>
+                <h2 id="modal-titulo-art"></h2>
+                <p class="modal-meta">
+                    <span id="modal-livro-nome"></span> &mdash; <span id="modal-autor-nome"></span>
+                </p>
+            </div>
 
-                <div class="modal-textos">
-                    <h2 id="modal-titulo"></h2> <h3 id="modal-autor"></h3> 
-                    <p id="modal-opiniao"></p>  
-                </div>
+            <div class="modal-analogia-body">
+                <p id="modal-texto-analogia"></p>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="analogias.js"></script>
 </body>
 </html>
