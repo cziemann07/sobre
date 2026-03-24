@@ -1,207 +1,179 @@
 body {
-    font-family: 'Georgia', serif; /* Fonte clássica de livro */
-    background-color: #f4e4bc; /* Cor de papel envelhecido */
+    font-family: 'Georgia', serif;
+    background-color: #f4e4bc;
     color: #2c1e14;
     margin: 0;
+    min-height: 100vh;
+}
+
+main {
     padding: 20px;
 }
 
-header h1 {
-    text-align: center;
+.site-header {
+    padding: 24px 20px 8px;
+}
+
+.site-header__inner {
+    max-width: 1200px;
+    margin: 0 auto;
     border-bottom: 2px solid #8b5a2b;
-    padding-bottom: 20px;
-    justify-content: space-between;
+    padding-bottom: 18px;
 }
 
-/* 
-.navbar {
-    fundo na barra toda
+.site-brand {
+    text-align: center;
+    margin-bottom: 12px;
 }
 
-.nav-links {
-    container intermediário
+.site-brand__title {
+    color: #2c1e14;
+    text-decoration: none;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
 }
-*/
 
-/* A lista de links */
-.links {
+.site-brand__subtitle {
+    margin: 8px 0 0;
+    color: #6b5344;
+    font-size: 0.95rem;
+}
+
+.site-nav__links {
     display: flex;
     list-style: none;
-    justify-content: flex-end;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 25px;
     margin: 0;
     padding: 10px 20px;
-    /* SEM background aqui */
 }
 
-/* Cada item da lista */
-.links li {
+.site-nav__links li {
     display: flex;
-    align-items: center; /* alinha o texto com a setinha do dropdown */
+    align-items: center;
     gap: 5px;
 }
 
-/* Os links em si */
-.links > li > a {
+.site-nav__links > li > a {
     text-decoration: none;
-    color: #2c1e14; /* marrom escuro, combina com o tema */
+    color: #2c1e14;
     font-weight: 500;
-    padding: 8px 15px; /* padding SEMPRE presente - evita o "pulo" no hover */
-    border-radius: 4px; /* bordas levemente arredondadas */
-    transition: all 0.25s ease; /* transição suave pra cor e background */
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: all 0.25s ease;
 }
 
-.links > li > a:hover {
-    color: #fffdf5; /* texto clarinho no hover */
-    background-color: #8b5a2b; /* fundo marrom (cor do tema) */
-    /* SEM mudança de padding = elemento não muda de tamanho = página não treme */
+.site-nav__links > li > a:hover,
+.site-nav__links a.is-active,
+.site-footer__links a.is-active {
+    color: #fffdf5;
+    background-color: #8b5a2b;
 }
 
-/* Setinha do dropdown (ícone chevron) */
-.links i {
+.site-nav__links i {
     font-size: 0.9rem;
     color: #2c1e14;
-    transition: transform 0.3s ease; /* transição suave pra quando a setinha rotacionar */
+    transition: transform 0.3s ease;
 }
 
-/* ============================================
-   DROPDOWN - Sistema de submenu
-   ============================================ */
-
-/* Container do dropdown - o <li> que contém o submenu */
-.links li.dropdown {
-    position: relative; /* ESSENCIAL: cria contexto de posicionamento pro filho absolute */
-    /* sem isso, o dropdown-menu iria se posicionar relativo à página toda, não ao <li> */
+.site-nav__dropdown {
+    position: relative;
 }
 
-/* Rotaciona a setinha quando passa o mouse no item pai */
-.links li.dropdown:hover > i {
-    transform: rotate(180deg); /* gira 180 graus = setinha aponta pra cima */
-    /* o ">" significa filho DIRETO, não afeta ícones dentro do submenu */
+.site-nav__dropdown:hover > i {
+    transform: rotate(180deg);
 }
 
-/* O menu dropdown em si (a lista de sub-links) */
-.dropdown-menu {
-    position: absolute; /* sai do fluxo normal, se posiciona relativo ao pai (li.dropdown) */
-    top: calc(100% + 10px); /* posiciona abaixo do pai + 10px de espaço */
-    left: 50%; /* começa no centro do pai */
-    transform: translateX(-50%) translateY(-10px); /* centraliza horizontalmente + desloca pra cima (animação) */
-
-    /* === Visual estilizado com tema de livro antigo === */
-    background: linear-gradient(145deg, #fffdf5 0%, #f4e4bc 100%); /* gradiente sutil de papel */
-    border: 2px solid #8b5a2b; /* borda marrom forte, cor do tema */
-    border-radius: 8px; /* cantos mais arredondados */
+.site-nav__dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background: linear-gradient(145deg, #fffdf5 0%, #f4e4bc 100%);
+    border: 2px solid #8b5a2b;
+    border-radius: 8px;
     box-shadow:
-        0 8px 25px rgba(44, 30, 20, 0.25), /* sombra principal (profundidade) */
-        inset 0 1px 0 rgba(255, 255, 255, 0.5); /* brilho interno no topo (efeito papel) */
-
-    list-style: none; /* remove as bolinhas da lista */
-    padding: 8px 0; /* espaço interno vertical */
-    margin: 0; /* remove margem padrão de <ul> */
-    min-width: 160px; /* largura mínima */
-
-    /* === Estado inicial: ESCONDIDO === */
-    opacity: 0; /* transparente (invisível) */
-    visibility: hidden; /* não interagível (não clicável) */
-    /* usamos os dois pq: opacity sozinho ainda permite cliques, visibility sozinho não anima */
-
-    transition: all 0.3s ease; /* anima TODAS as propriedades em 0.3 segundos */
+        0 8px 25px rgba(44, 30, 20, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+    min-width: 170px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 20;
 }
 
-/* Setinha/triângulo apontando pro item pai */
-.dropdown-menu::before {
-    content: ''; /* pseudo-elemento vazio */
-    position: absolute; /* posiciona relativo ao dropdown-menu */
-    top: -8px; /* 8px acima do dropdown */
-    left: 50%; /* centralizado horizontalmente */
-    transform: translateX(-50%); /* ajuste fino pra centralizar */
-
-    /* === Triângulo feito com bordas CSS === */
-    border-left: 8px solid transparent; /* lado esquerdo invisível */
-    border-right: 8px solid transparent; /* lado direito invisível */
-    border-bottom: 8px solid #8b5a2b; /* só o fundo visível = forma triângulo */
-    /* triângulo aponta pra cima, conectando visualmente o dropdown ao item pai */
+.site-nav__dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #8b5a2b;
 }
 
-/* Mostra o dropdown quando passa o mouse no pai */
-.links li.dropdown:hover .dropdown-menu {
-    opacity: 1; /* totalmente visível */
-    visibility: visible; /* agora é clicável */
-    transform: translateX(-50%) translateY(0); /* mantém centralizado + volta pra posição original */
-    /* a combinação dessas mudanças cria o efeito de "deslizar pra baixo e aparecer" */
+.site-nav__dropdown:hover .site-nav__dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
 }
 
-/* Itens dentro do dropdown */
-.dropdown-menu li {
-    padding: 0; /* remove padding pra o <a> controlar o espaço clicável */
-    margin: 0 8px; /* margem lateral pra não encostar na borda */
+.site-nav__dropdown-menu li {
+    padding: 0;
+    margin: 0 8px;
 }
 
-/* Links dentro do dropdown */
-.dropdown-menu a {
-    display: block; /* faz o link ocupar a linha toda (área clicável maior) */
-    padding: 12px 16px; /* espaço interno generoso */
-    color: #2c1e14; /* cor do texto marrom escuro */
-    text-decoration: none; /* remove sublinhado */
-    font-size: 0.95rem; /* tamanho levemente menor que a navbar */
-    font-weight: 500; /* peso médio */
-    border-radius: 6px; /* bordas arredondadas nos itens */
-    transition: all 0.2s ease; /* transição suave */
+.site-nav__dropdown-menu a {
+    display: block;
+    padding: 12px 16px;
+    color: #2c1e14;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.2s ease;
 }
 
-/* Hover nos links do dropdown */
-.dropdown-menu a:hover {
-    background-color: #8b5a2b; /* fundo marrom (cor principal do tema) */
-    color: #fffdf5; /* texto clarinho */
-    padding-left: 20px; /* desloca texto pra direita = efeito de "entrar" */
+.site-nav__dropdown-menu a:hover {
+    background-color: #8b5a2b;
+    color: #fffdf5;
+    padding-left: 20px;
 }
 
 .grade-livros {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsivo automático */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 30px;
     padding: 20px;
 }
-
-/* ============================================
-   HOVER NOS CARDS DE LIVROS
-   ============================================ */
 
 .livro-card {
     background: #fffdf5;
     border: 1px solid #dcdcdc;
     padding: 20px;
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-
-    /* === Propriedades adicionadas pro efeito hover === */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    /* transition define QUAIS propriedades vão animar e por quanto tempo */
-    /* aqui: transform e box-shadow vão animar em 0.3s com curva "ease" */
-    /* se não tiver transition, a mudança seria instantânea (sem animação) */
-
-    cursor: pointer; /* mãozinha ao passar o mouse, indica que é clicável */
+    cursor: pointer;
 }
 
-/* Efeito quando passa o mouse no card */
 .livro-card:hover {
     transform: translateY(-5px);
-    /* translateY move o elemento no eixo Y (vertical) */
-    /* valor negativo = move pra CIMA */
-    /* -5px = sobe 5 pixels, criando efeito de "flutuar/levantar" */
-
-    box-shadow: 8px 8px 20px rgba(0,0,0,0.2);
-    /* sombra maior e mais forte que o estado normal */
-    /* estado normal: 5px 5px 15px com 0.1 de opacidade */
-    /* hover: 8px 8px 20px com 0.2 de opacidade */
-    /* sombra maior + card "subindo" = sensação de elevação/profundidade */
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .livro-card img {
     max-width: 100px;
     float: left;
     margin-right: 15px;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .opiniao {
@@ -222,54 +194,48 @@ header h1 {
     font-style: italic;
 }
 
-/* overlay */
 .modal {
-    display: none; /* começa invisível */
-    position: fixed; /* fixed = fica fixo na TELA, não no documento. logo, não scrolla junto com a página */
-    top: 0; /* gruda no topo da tela */
-    left: 0; /* gruda na esquerda da tela */
-    width: 100%; /* largura = tela inteira */
-    height: 100%; /* altura = tela inteira */
-    /* top:0 + left:0 + 100% width/height = cobre toda a viewport */
-    background-color: rgba(0, 0, 0, 0.7); /* preto com 70% de opacidade = efeito escurecido atrás do modal */
-    justify-content: center; /* centraliza o filho (.modal-content) horizontalmente */
-    align-items: center; /* centraliza o filho verticalmente */
-    /* justify e align só funcionam pq o JS muda pra display:flex */
-    z-index: 1000; /* fica na frente de TUDO. quanto maior o número, mais "em cima" fica */
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .modal-content {
-    background-color: #fffdf5; /* fundo clarinho, cor de papel  */
-    padding: 30px; /* espaço interno entre a borda e o conteúdo */
-    border-radius: 8px; /* bordas arredondadas */
-    max-width: 600px; /* não deixa ficar largo demais em telas grandes */
-    position: relative; /* necessário pro btn-close se posicionar DENTRO desse elemento */
-    /* sem position:relative aqui, o absolute do botão ia se basear na tela toda */
-    width: 90%; /* garante que não estoure na largura no mobile */
-    max-height: 90vh; /* ocupa no MÁX 90% da altura da tela de quem está vendo */ 
-    overflow-y: auto; /* se o conteudo passar da altura, cria barra de scroll vertical */
+    background-color: #fffdf5;
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 600px;
+    position: relative;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .modal-body {
-    display: flex; /* coloca imagem e texto lado a lado */
-    gap: 30px; /* espaço de 30px entre a imagem e o texto */
+    display: flex;
+    gap: 30px;
 }
 
 .btn-close {
-    position: absolute; /* sai do fluxo normal e se posiciona relativo ao pai (modal-content) */
-    top: 10px; /* 10px abaixo do topo do modal-content */
-    right: 15px; /* 15px da borda direita do modal-content */
-    /* top + right = canto superior direito */
-    background: none; /* remove fundo padrão de botão */
-    border: none; /* remove borda padrão de botão */
-    font-size: 2rem; /* tamanho grande pro X ficar clicável */
-    cursor: pointer; /* mãozinha quando passa o mouse */
-    color: #8b5a2b; /* marrom, combina com o tema */
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #8b5a2b;
 }
 
 .btn-close::before {
-    content: "×"; /* insere o caractere X sem precisar botar no HTML */
-    /* ::before cria um pseudo-elemento filho, útil pra ícones simples */
+    content: "×";
 }
 
 .modal-capa img {
@@ -279,7 +245,6 @@ header h1 {
     display: flex;
 }
 
-/* Estilo da página de artigos */
 .header-blog {
     text-align: center;
     margin-bottom: 40px;
@@ -288,7 +253,7 @@ header h1 {
 
 .lista-artigos {
     max-width: 800px;
-    margin: 0 auto; /* Centraliza a coluna de artigos */
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -296,14 +261,14 @@ header h1 {
 
 .artigo-card {
     background: #fffdf5;
-    border-left: 5px solid #8b5a2b; /* Detalhe lateral elegante */
+    border-left: 5px solid #8b5a2b;
     padding: 25px;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.05);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s;
 }
 
 .artigo-card:hover {
-    transform: translateX(5px); /* Efeito de mover pro lado ao passar o mouse */
+    transform: translateX(5px);
 }
 
 .artigo-card h3 {
@@ -327,7 +292,6 @@ header h1 {
     margin-top: 10px;
 }
 
-/* Ajuste do Texto dentro do Modal de Leitura */
 .artigo-leitura {
     text-align: justify;
     line-height: 1.8;
@@ -335,6 +299,163 @@ header h1 {
     width: 100%;
 }
 
-.artigo-leitura h1 { font-size: 1.8rem; text-align: center; }
-.artigo-leitura h2 { color: #8b5a2b; margin-top: 30px; }
-.artigo-leitura strong { color: #6b2a0b; }
+.artigo-leitura h1 {
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.artigo-leitura h2 {
+    color: #8b5a2b;
+    margin-top: 30px;
+}
+
+.artigo-leitura strong {
+    color: #6b2a0b;
+}
+
+.site-footer {
+    padding: 10px 20px 28px;
+}
+
+.site-footer__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    border-top: 2px solid rgba(139, 90, 43, 0.5);
+    padding-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.site-footer__title {
+    margin: 0 0 8px;
+}
+
+.site-footer__text {
+    margin: 0;
+    max-width: 560px;
+    line-height: 1.6;
+}
+
+.site-footer__links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.site-footer__links a {
+    text-decoration: none;
+    color: #2c1e14;
+    border: 1px solid #8b5a2b;
+    border-radius: 999px;
+    padding: 8px 14px;
+    transition: all 0.25s ease;
+}
+
+.site-footer__links a:hover {
+    color: #fffdf5;
+    background-color: #8b5a2b;
+}
+
+.brasil-main {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.brasil-hero {
+    background: linear-gradient(135deg, rgba(0, 104, 71, 0.18), rgba(255, 223, 0, 0.22));
+    border: 1px solid rgba(0, 39, 118, 0.2);
+    border-radius: 18px;
+    padding: 32px;
+    box-shadow: 0 10px 24px rgba(44, 30, 20, 0.08);
+}
+
+.brasil-eyebrow {
+    margin: 0 0 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #006847;
+    font-weight: 700;
+}
+
+.brasil-hero h1 {
+    margin: 0 0 16px;
+    font-size: clamp(2rem, 4vw, 3.3rem);
+    line-height: 1.1;
+}
+
+.brasil-intro {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    max-width: 760px;
+}
+
+.brasil-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-top: 28px;
+}
+
+.brasil-card {
+    background: #fffdf5;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 24px rgba(44, 30, 20, 0.08);
+    border: 1px solid rgba(139, 90, 43, 0.18);
+}
+
+.brasil-card.destaque {
+    background: linear-gradient(160deg, #fffdf5, #f7efd9);
+}
+
+.brasil-card h2 {
+    margin-top: 0;
+}
+
+.brasil-lista {
+    margin: 0;
+    padding-left: 20px;
+    line-height: 1.9;
+}
+
+.brasil-citacao {
+    margin-top: 28px;
+    padding: 32px;
+    border-left: 6px solid #009739;
+    background: rgba(255, 253, 245, 0.75);
+    border-radius: 12px;
+}
+
+.brasil-citacao blockquote {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.7;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .site-header {
+        padding-inline: 14px;
+    }
+
+    .site-footer__inner {
+        flex-direction: column;
+    }
+
+    .modal-body {
+        flex-direction: column;
+    }
+
+    main {
+        padding: 14px;
+    }
+
+    .brasil-hero,
+    .brasil-card,
+    .brasil-citacao {
+        padding: 22px;
+    }
+}

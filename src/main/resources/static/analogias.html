@@ -3,89 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analogias | Literatura ↔ TI</title>
+    <title>Analogias | Literatura e TI</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="analogias.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
-
-    <header>
-        <h1>Ziemann's Estante Virtual</h1>
-
-        <nav>
-            <div class="navbar">
-                <div class="nav-links">
-                    <ul class="links">
-                        <li>
-                            <a href="index.html">HOME</a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#">BLOG</a>
-                            <i class="bx bx-chevron-down"></i>
-                            <ul class="dropdown-menu">
-                                <li><a href="artigos.html?modulo=EDUCACAO">EDUCAÇÃO</a></li>
-                                <li><a href="artigos.html?modulo=ARTIGO">ARTIGO</a></li>
-                                <li><a href="artigos.html?modulo=POEMA">POEMA</a></li>
-                                <li><a href="analogias.html">ANALOGIAS</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#">HISTÓRIA</a>
-                            <i class="bx bx-chevron-down"></i>
-                            <ul class="dropdown-menu">
-                                <li><a href="mapa.html">MAPA</a></li>
-                                <li><a href="cronologia.html">CRONOLOGIA</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">SOBRE</a>
-                        </li>
-                        <li>
-                            <a href="#">CONTATO</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <div id="site-header-placeholder"></div>
 
     <main class="analogias-main">
-
-        <!-- Hero do módulo -->
         <section class="analogias-hero">
             <div class="hero-content">
                 <span class="hero-tag"></span>
                 <h2 class="hero-titulo">Literatura <span class="operador">↔</span> Tecnologia</h2>
                 <p class="hero-subtitulo">
                     Onde Machado de Assis debugga state machines<br>
-                    e Jorge Amado arquiteta sistemas distribuídos.
+                    e Jorge Amado arquiteta sistemas distribuidos.
                 </p>
                 <div class="hero-linha"></div>
             </div>
         </section>
 
-        <!-- Container dos cards -->
         <section id="container-analogias" class="grade-analogias">
             <p class="loading-msg">
                 <span class="loading-cursor">█</span> Compilando analogias...
             </p>
         </section>
-
     </main>
 
-    <!-- Modal de leitura -->
     <div id="modal-analogia" class="modal-analogia">
         <div class="modal-analogia-content">
             <button id="btn-close-analogia" class="btn-close-analogia">
                 <i class="bx bx-x"></i>
             </button>
-            
+
             <div class="modal-analogia-header">
                 <span id="modal-tag" class="modal-tag-tech"></span>
                 <h2 id="modal-titulo-art"></h2>
                 <p class="modal-meta">
-                    <span id="modal-livro-nome"></span> &mdash; <span id="modal-autor-nome"></span>
+                    <span id="modal-livro-nome"></span> - <span id="modal-autor-nome"></span>
                 </p>
             </div>
 
@@ -95,6 +51,9 @@
         </div>
     </div>
 
+    <div id="site-footer-placeholder"></div>
+
+    <script src="site.js"></script>
     <script src="analogias.js"></script>
 </body>
 </html>
